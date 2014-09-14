@@ -23,6 +23,8 @@ import java.util.ArrayList;
  */
 public class MaintenanceListFragment extends ListFragment {
 
+    public ArrayAdapter<DummyContent.DummyItem> dummyItemArrayAdapter;
+
     /**
      * The serialization (saved instance state) Bundle key representing the
      * activated item position. Only used on tablets.
@@ -74,18 +76,13 @@ public class MaintenanceListFragment extends ListFragment {
         super.onCreate(savedInstanceState);
 
         // TODO: replace with a real list adapter.
-//        setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(
-//                getActivity(),
-//                android.R.layout.simple_list_item_activated_1,
-//                android.R.id.text1,
-//                DummyContent.ITEMS));
-
-
-        setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(
+        dummyItemArrayAdapter = new ArrayAdapter<DummyContent.DummyItem>(
                 getActivity(),
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
-                new ArrayList<DummyContent.DummyItem>()));
+                DummyContent.ITEMS);
+        setListAdapter(dummyItemArrayAdapter);
+
     }
 
     @Override

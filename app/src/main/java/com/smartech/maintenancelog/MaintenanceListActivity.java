@@ -1,10 +1,21 @@
 package com.smartech.maintenancelog;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.app.Activity;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.smartech.maintenancelog.dummy.DummyContent;
 
 
 /**
@@ -31,6 +42,7 @@ public class MaintenanceListActivity extends Activity
      * device.
      */
     private boolean mTwoPane;
+    private ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +52,8 @@ public class MaintenanceListActivity extends Activity
         ListView lv = (ListView)findViewById(android.R.id.list);
         TextView emptyText = (TextView)findViewById(android.R.id.empty);
         lv.setEmptyView(emptyText);
+
+        progress = new ProgressDialog(this);
 
         if (findViewById(R.id.maintenance_detail_container) != null) {
             // The detail container view will be present only in the
@@ -55,8 +69,67 @@ public class MaintenanceListActivity extends Activity
                     .setActivateOnItemClick(true);
         }
 
+        final Button syncButton = (Button) findViewById(R.id.sync);
+        syncButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                progress.setMessage("Downloading Music :) ");
+                progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                progress.setIndeterminate(false);
+                progress.show();
+
+                final int totalProgressTime = 100;
+
+                final Thread t = new Thread(){
+
+                    @Override
+                    public void run(){
+
+                        int jumpTime = 0;
+                        while(jumpTime < totalProgressTime){
+                            try {
+                                sleep(400);
+                                jumpTime += 5;
+                                progress.setProgress(jumpTime);
+                            } catch (InterruptedException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
+
+                        }
+
+                        // ok, file is downloaded,
+                        if (jumpTime >= 100) {
+
+                            // sleep 2 seconds, so that you can see the 100%
+                            try {
+                                Thread.sleep(2000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+
+                            // close the progress bar dialog
+                            progress.dismiss();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ArrayAdapter<DummyContent.DummyItem> dummyItemArrayAdapter = ((MaintenanceListFragment) getFragmentManager()
+                                            .findFragmentById(R.id.maintenance_list)).dummyItemArrayAdapter;
+                                    DummyContent.addItem(new DummyContent.DummyItem("1", "Item 1"));
+                                    DummyContent.addItem(new DummyContent.DummyItem("2", "Item 2"));
+                                    DummyContent.addItem(new DummyContent.DummyItem("3", "Item 3"));
+                                    dummyItemArrayAdapter.notifyDataSetChanged();
+                                }
+                            });
+                        }
+
+                    }
+                };
+                t.start();
+            }
+        });
         // TODO: If exposing deep links into your app, handle intents here.
     }
+
 
     /**
      * Callback method from {@link MaintenanceListFragment.Callbacks}
