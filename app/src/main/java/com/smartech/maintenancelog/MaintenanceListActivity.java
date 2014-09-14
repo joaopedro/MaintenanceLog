@@ -3,8 +3,8 @@ package com.smartech.maintenancelog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
-
-
+import android.widget.ListView;
+import android.widget.TextView;
 
 
 /**
@@ -36,6 +36,10 @@ public class MaintenanceListActivity extends Activity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maintenance_list);
+
+        ListView lv = (ListView)findViewById(android.R.id.list);
+        TextView emptyText = (TextView)findViewById(android.R.id.empty);
+        lv.setEmptyView(emptyText);
 
         if (findViewById(R.id.maintenance_detail_container) != null) {
             // The detail container view will be present only in the

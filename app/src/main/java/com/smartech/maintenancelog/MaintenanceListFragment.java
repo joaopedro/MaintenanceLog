@@ -10,6 +10,8 @@ import android.widget.ListView;
 
 import com.smartech.maintenancelog.dummy.DummyContent;
 
+import java.util.ArrayList;
+
 /**
  * A list fragment representing a list of Maintenances. This fragment
  * also supports tablet devices by allowing list items to be given an
@@ -72,11 +74,18 @@ public class MaintenanceListFragment extends ListFragment {
         super.onCreate(savedInstanceState);
 
         // TODO: replace with a real list adapter.
+//        setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(
+//                getActivity(),
+//                android.R.layout.simple_list_item_activated_1,
+//                android.R.id.text1,
+//                DummyContent.ITEMS));
+
+
         setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(
                 getActivity(),
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
-                DummyContent.ITEMS));
+                new ArrayList<DummyContent.DummyItem>()));
     }
 
     @Override

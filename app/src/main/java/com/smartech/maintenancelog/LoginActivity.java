@@ -268,9 +268,15 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
             showProgress(false);
 
             if (success) {
-                Intent intent = new Intent(LoginActivity.this, MaintenanceListActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                getApplicationContext().startActivity(intent);
+                if(mEmail.equals("tec")){
+                    Intent intent = new Intent(LoginActivity.this, MaintenanceListActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    getApplicationContext().startActivity(intent);
+                }else if(mEmail.equals("audit")){
+                    Intent intent = new Intent(LoginActivity.this, AuditMainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    getApplicationContext().startActivity(intent);
+                }
 
                 finish();
             } else {
