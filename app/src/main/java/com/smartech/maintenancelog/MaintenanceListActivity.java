@@ -16,6 +16,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.smartech.maintenancelog.dummy.DummyContent;
+import com.smartech.maintenancelog.integration.zxing.IntentIntegrator;
+import com.smartech.maintenancelog.integration.zxing.IntentResult;
 
 
 /**
@@ -72,7 +74,7 @@ public class MaintenanceListActivity extends Activity
         final Button syncButton = (Button) findViewById(R.id.sync);
         syncButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                progress.setMessage("Downloading Music :) ");
+                progress.setMessage("Reloading data... ");
                 progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                 progress.setIndeterminate(false);
                 progress.show();
@@ -87,7 +89,7 @@ public class MaintenanceListActivity extends Activity
                         int jumpTime = 0;
                         while(jumpTime < totalProgressTime){
                             try {
-                                sleep(400);
+                                sleep(200);
                                 jumpTime += 5;
                                 progress.setProgress(jumpTime);
                             } catch (InterruptedException e) {
@@ -102,7 +104,7 @@ public class MaintenanceListActivity extends Activity
 
                             // sleep 2 seconds, so that you can see the 100%
                             try {
-                                Thread.sleep(2000);
+                                Thread.sleep(1000);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
@@ -114,9 +116,15 @@ public class MaintenanceListActivity extends Activity
                                 public void run() {
                                     ArrayAdapter<DummyContent.DummyItem> dummyItemArrayAdapter = ((MaintenanceListFragment) getFragmentManager()
                                             .findFragmentById(R.id.maintenance_list)).dummyItemArrayAdapter;
-                                    DummyContent.addItem(new DummyContent.DummyItem("1", "Item 1"));
-                                    DummyContent.addItem(new DummyContent.DummyItem("2", "Item 2"));
-                                    DummyContent.addItem(new DummyContent.DummyItem("3", "Item 3"));
+                                    if(DummyContent.ITEMS.size()==0){
+                                        DummyContent.addItem(new DummyContent.DummyItem("12331", "Ordem 12331 para Ar Condicionado em Leiria com Prioridade Alta"));
+                                        DummyContent.addItem(new DummyContent.DummyItem("122", "Ordem 122 para Aspirador Indústrial em Lisboa com Prioridade Média"));
+                                        DummyContent.addItem(new DummyContent.DummyItem("9872", "Ordem 9872 para Compressor de 200 L em Faro com Prioridade Alta"));
+                                        DummyContent.addItem(new DummyContent.DummyItem("2214", "Ordem 2214 para Chiller da UA 12 em Coimbra com Prioridade Alta"));
+                                        DummyContent.addItem(new DummyContent.DummyItem("981", "Ordem 981 para Unidade X da Linha 2 em Lisboa com Prioridade Média"));
+                                        DummyContent.addItem(new DummyContent.DummyItem("2213", "Ordem 2213 para Ar Condicionado em Marinha Grande com Prioridade Baixa"));
+                                        DummyContent.addItem(new DummyContent.DummyItem("215", "Ordem 215 para Elevador Hidraúlico em Leiria com Prioridade Baixa"));
+                                    }
                                     dummyItemArrayAdapter.notifyDataSetChanged();
                                 }
                             });
@@ -127,9 +135,26 @@ public class MaintenanceListActivity extends Activity
                 t.start();
             }
         });
+
+        final Button scanCodeButton = (Button) findViewById(R.id.readCode);
+        scanCodeButton.setOnClickListener(new View.OnClickListener() {
+              public void onClick(View v) {
+                  IntentIntegrator integrator = new IntentIntegrator(MaintenanceListActivity.this);
+                  integrator.initiateScan();
+              }
+          });
         // TODO: If exposing deep links into your app, handle intents here.
     }
 
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+        if (scanResult != null) {
+            Intent detailIntent = new Intent(this, MaintenanceDetailActivity.class);
+            detailIntent.putExtra(MaintenanceDetailFragment.ARG_SCANNED_CODE, scanResult.getContents());
+            startActivity(detailIntent);        }
+        // else continue with any other code you need in the method
+
+    }
 
     /**
      * Callback method from {@link MaintenanceListFragment.Callbacks}

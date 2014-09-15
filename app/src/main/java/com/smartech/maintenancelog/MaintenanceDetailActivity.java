@@ -41,6 +41,8 @@ public class MaintenanceDetailActivity extends Activity {
             Bundle arguments = new Bundle();
             arguments.putString(MaintenanceDetailFragment.ARG_ITEM_ID,
                     getIntent().getStringExtra(MaintenanceDetailFragment.ARG_ITEM_ID));
+            arguments.putString(MaintenanceDetailFragment.ARG_SCANNED_CODE,
+                    getIntent().getStringExtra(MaintenanceDetailFragment.ARG_SCANNED_CODE));
             MaintenanceDetailFragment fragment = new MaintenanceDetailFragment();
             fragment.setArguments(arguments);
             getFragmentManager().beginTransaction()

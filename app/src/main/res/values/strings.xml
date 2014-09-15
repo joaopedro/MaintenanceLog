@@ -3,11 +3,14 @@
 
     <string name="app_name">Maintenance Log</string>
     <string name="title_maintenance_detail">Maintenance Detail</string>
+    <string name="title_maintenance_list">My Maintenances</string>
     <string name="sync_button">Synchronize</string>
     <string name="readCode_button">Read QrCode</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_audit_main">Audit</string>
     <string name="empty_list">Maintenance Activities not found. Please Reload</string>
+    <string name="audit_mode">Audit Mode</string>
+    <string name="load_data_success">Data Loaded</string>
 
 </resources>

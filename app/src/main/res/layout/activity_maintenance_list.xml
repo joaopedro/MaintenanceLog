@@ -1,53 +1,45 @@
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    android:layout_column="2"
-    android:orientation="vertical"
-    tools:context=".MaintenanceListActivity"
-    android:id="@+id/maintenance_list_layout">
+    android:orientation="vertical">
 
-    <fragment
-        android:id="@+id/maintenance_list"
-        android:name="com.smartech.maintenancelog.MaintenanceListFragment"
-        tools:layout="@android:layout/list_content"
-        android:layout_column="1"
-        android:layout_columnSpan="2"
-        android:layout_row="1"
-        android:layout_rowSpan="1"
-        android:layout_gravity="top" />
 
     <TextView
         android:id="@android:id/empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/empty_list"
-        android:layout_column="1"
-        android:layout_columnSpan="2"
-        android:layout_row="1"
-        android:layout_rowSpan="1"
         android:layout_gravity="top|center_horizontal" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sync_button"
-        android:id="@+id/sync"
-        android:layout_column="1"
-        android:layout_row="2"
-        android:layout_gravity="left"
-        />
+    <fragment
+        android:id="@+id/maintenance_list"
+        android:name="com.smartech.maintenancelog.MaintenanceListFragment"
+        tools:layout="@android:layout/list_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/readCode_button"
-        android:id="@+id/readCode"
-        android:layout_column="2"
-        android:layout_row="2"
-        android:layout_gravity="right" />
 
-</GridLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_weight="0">
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/sync_button"
+            android:id="@+id/sync"
+            />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/readCode_button"
+            android:id="@+id/readCode"/>
+    </LinearLayout>
+</LinearLayout>
 
