@@ -117,13 +117,13 @@ public class MaintenanceListActivity extends Activity
                                     ArrayAdapter<DummyContent.DummyItem> dummyItemArrayAdapter = ((MaintenanceListFragment) getFragmentManager()
                                             .findFragmentById(R.id.maintenance_list)).dummyItemArrayAdapter;
                                     if(DummyContent.ITEMS.size()==0){
-                                        DummyContent.addItem(new DummyContent.DummyItem("12331", "Ordem 12331 para Ar Condicionado em Leiria com Prioridade Alta"));
-                                        DummyContent.addItem(new DummyContent.DummyItem("122", "Ordem 122 para Aspirador Indústrial em Lisboa com Prioridade Média"));
-                                        DummyContent.addItem(new DummyContent.DummyItem("9872", "Ordem 9872 para Compressor de 200 L em Faro com Prioridade Alta"));
-                                        DummyContent.addItem(new DummyContent.DummyItem("2214", "Ordem 2214 para Chiller da UA 12 em Coimbra com Prioridade Alta"));
-                                        DummyContent.addItem(new DummyContent.DummyItem("981", "Ordem 981 para Unidade X da Linha 2 em Lisboa com Prioridade Média"));
-                                        DummyContent.addItem(new DummyContent.DummyItem("2213", "Ordem 2213 para Ar Condicionado em Marinha Grande com Prioridade Baixa"));
-                                        DummyContent.addItem(new DummyContent.DummyItem("215", "Ordem 215 para Elevador Hidraúlico em Leiria com Prioridade Baixa"));
+                                        DummyContent.addItem(new DummyContent.DummyItem("12331", "Ordem 12331 para Ar Condicionado em Leiria"));
+                                        DummyContent.addItem(new DummyContent.DummyItem("122", "Ordem 122 para Aspirador Indústrial em Lisboa"));
+                                        DummyContent.addItem(new DummyContent.DummyItem("9872", "Ordem 9872 para Compressor de 200 L em Faro"));
+                                        DummyContent.addItem(new DummyContent.DummyItem("2214", "Ordem 2214 para Chiller da UA 12 em Coimbra"));
+                                        DummyContent.addItem(new DummyContent.DummyItem("981", "Ordem 981 para Unidade X da Linha 2 em Lisboa"));
+                                        DummyContent.addItem(new DummyContent.DummyItem("2213", "Ordem 2213 para Ar Condicionado em Marinha Grande"));
+                                        DummyContent.addItem(new DummyContent.DummyItem("215", "Ordem 215 para Elevador Hidraúlico em Leiria"));
                                     }
                                     dummyItemArrayAdapter.notifyDataSetChanged();
                                 }

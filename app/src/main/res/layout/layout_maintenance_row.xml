@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="50px"
+    >
+
+
+    <TextView
+        android:id="@+id/maintenance_detail_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:background="?android:attr/activatedBackgroundIndicator"
+        android:text="Ordem 12331 para Ar Condicionado em Leiria com Prioridade Alta"
+        android:layout_weight="1"
+        />
+
+    <ImageView
+        android:id="@+id/maintenance_detail_periodicity"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:minHeight="50px"
+        android:src="@drawable/abc_ic_clear"/>
+</LinearLayout>

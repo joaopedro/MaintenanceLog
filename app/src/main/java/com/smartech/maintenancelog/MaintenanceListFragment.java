@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 
+import com.smartech.maintenancelog.adapters.MaintenanceRowAdapter;
 import com.smartech.maintenancelog.dummy.DummyContent;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
  */
 public class MaintenanceListFragment extends ListFragment {
 
-    public ArrayAdapter<DummyContent.DummyItem> dummyItemArrayAdapter;
+    public MaintenanceRowAdapter dummyItemArrayAdapter;
 
     /**
      * The serialization (saved instance state) Bundle key representing the
@@ -76,10 +77,7 @@ public class MaintenanceListFragment extends ListFragment {
         super.onCreate(savedInstanceState);
 
         // TODO: replace with a real list adapter.
-        dummyItemArrayAdapter = new ArrayAdapter<DummyContent.DummyItem>(
-                getActivity(),
-                android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
+        dummyItemArrayAdapter = new MaintenanceRowAdapter(getActivity(),
                 DummyContent.ITEMS);
         setListAdapter(dummyItemArrayAdapter);
 
