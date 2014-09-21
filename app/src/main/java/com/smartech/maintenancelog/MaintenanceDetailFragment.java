@@ -5,9 +5,11 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 
+import com.smartech.maintenancelog.adapters.ProcedureRowAdapter;
 import com.smartech.maintenancelog.dummy.DummyContent;
 
 /**
@@ -52,7 +54,12 @@ public class MaintenanceDetailFragment extends Fragment {
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
             scannedCode = getArguments().getString(ARG_SCANNED_CODE);
+            if(scannedCode != null){
+                mItem = DummyContent.ITEM_MAP.get(scannedCode.substring(scannedCode.indexOf("Número SAP: ")+12, scannedCode.indexOf("\r\nEquipamento")));
+            }
         }
+
+
 
     }
 
@@ -62,14 +69,18 @@ public class MaintenanceDetailFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_maintenance_detail, container, false);
 
         // Show the dummy content as text in a TextView.
-        if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.maintenance_detail)).setText(mItem.numOrdem);
-        }
+//        if (mItem != null) {
+//            ((TextView) rootView.findViewById(R.id.maintenance_detail)).setText(mItem.numOrdem);
+//        }
 
-        if (scannedCode != null) {
-            ((TextView) rootView.findViewById(R.id.maintenance_detail)).setText(scannedCode);
-            //((TextView) rootView.findViewById(R.id.code_read_result)).setText(scannedCode);
-        }
+        getActivity().getActionBar().setTitle("Equipamento "+mItem.numEquipamento +" Ordem "+mItem.numOrdem);
+
+        ListView listProcedimentos = (ListView) rootView.findViewById(R.id.list_procedimentos);
+
+        ProcedureRowAdapter procedureRowAdapter = new ProcedureRowAdapter(getActivity(),
+                mItem.getProcedures());
+
+        listProcedimentos.setAdapter(procedureRowAdapter);
 
         return rootView;
     }

@@ -19,6 +19,9 @@ import com.smartech.maintenancelog.dummy.DummyContent;
 import com.smartech.maintenancelog.integration.zxing.IntentIntegrator;
 import com.smartech.maintenancelog.integration.zxing.IntentResult;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * An activity representing a list of Maintenances. This activity
@@ -119,20 +122,27 @@ public class MaintenanceListActivity extends Activity
                                     ArrayAdapter<DummyContent.DummyItem> dummyItemArrayAdapter = ((MaintenanceListFragment) getFragmentManager()
                                             .findFragmentById(R.id.maintenance_list)).dummyItemArrayAdapter;
                                     if(DummyContent.ITEMS.size()==0){
-                                        DummyContent.addItem(new DummyContent.DummyItem("12331", "12331", "98492", "Ar Condicionado","Leiria", "N/A"));
-                                        DummyContent.addItem(new DummyContent.DummyItem("122", "122", "23921", "Aspirador Indústrial","Lisboa", "N/A"));
-                                        DummyContent.addItem(new DummyContent.DummyItem("9872", "9872", "884351", "Compressor de 200 L", "Faro", "N/A"));
-                                        DummyContent.addItem(new DummyContent.DummyItem("2214", "2214", "660098", "Chiller da UA 12","Coimbra", "N/A"));
-                                        DummyContent.addItem(new DummyContent.DummyItem("981", "981", "1221114", "Unidade X da Linha 2","Lisboa", "N/A"));
-                                        DummyContent.addItem(new DummyContent.DummyItem("2213", "2213", "412104", "Ar Condicionado","Marinha Grande", "N/A"));
-                                        DummyContent.addItem(new DummyContent.DummyItem("215", "215", "909042","Elevador Hidraúlico","Leiria", "N/A"));
-                                        DummyContent.addItem(new DummyContent.DummyItem("12331", "12331", "98492", "Ar Condicionado","Leiria", "N/A"));
-                                        DummyContent.addItem(new DummyContent.DummyItem("122", "122", "23921", "Aspirador Indústrial","Lisboa", "N/A"));
-                                        DummyContent.addItem(new DummyContent.DummyItem("9872", "9872", "884351", "Compressor de 200 L", "Faro", "N/A"));
-                                        DummyContent.addItem(new DummyContent.DummyItem("2214", "2214", "660098", "Chiller da UA 12","Coimbra", "N/A"));
-                                        DummyContent.addItem(new DummyContent.DummyItem("981", "981", "1221114", "Unidade X da Linha 2","Lisboa", "N/A"));
-                                        DummyContent.addItem(new DummyContent.DummyItem("2213", "2213", "412104", "Ar Condicionado","Marinha Grande", "N/A"));
-                                        DummyContent.addItem(new DummyContent.DummyItem("215", "215", "909042","Elevador Hidraúlico","Leiria", "N/A"));
+                                        List<DummyContent.Procedure> procedureOne = new ArrayList<DummyContent.Procedure>();
+                                        procedureOne.add(new DummyContent.Procedure("CHECK", "Verificar Pressão do sensor X"));
+                                        procedureOne.add(new DummyContent.Procedure("CHECK", "Verificar Pressão do sensor Y"));
+                                        procedureOne.add(new DummyContent.Procedure("INFO", "Ter atenção ao sentido da Rosca"));
+                                        procedureOne.add(new DummyContent.Procedure("CHECK", "Verificar as afinações"));
+                                        procedureOne.add(new DummyContent.Procedure("INPUT", "Recolher valor WIS"));
+
+                                        DummyContent.addItem(new DummyContent.DummyItem("12331", "12331", "98492", "Ar Condicionado","Leiria", "N/A", procedureOne));
+                                        DummyContent.addItem(new DummyContent.DummyItem("122", "122", "23921", "Aspirador Indústrial","Lisboa", "N/A", procedureOne));
+                                        DummyContent.addItem(new DummyContent.DummyItem("9872", "9872", "884351", "Compressor de 200 L", "Faro", "N/A", procedureOne));
+                                        DummyContent.addItem(new DummyContent.DummyItem("2214", "2214", "660098", "Chiller da UA 12","Coimbra", "N/A", procedureOne));
+                                        DummyContent.addItem(new DummyContent.DummyItem("50021653", "981", "50021653", "Unidade X da Linha 2","Lisboa", "N/A", procedureOne));
+                                        DummyContent.addItem(new DummyContent.DummyItem("2213", "2213", "412104", "Ar Condicionado","Marinha Grande", "N/A", procedureOne));
+                                        DummyContent.addItem(new DummyContent.DummyItem("215", "215", "909042","Elevador Hidraúlico","Leiria", "N/A", procedureOne));
+                                        DummyContent.addItem(new DummyContent.DummyItem("12331", "12331", "98492", "Ar Condicionado","Leiria", "N/A", procedureOne));
+                                        DummyContent.addItem(new DummyContent.DummyItem("122", "122", "23921", "Aspirador Indústrial","Lisboa", "N/A", procedureOne));
+                                        DummyContent.addItem(new DummyContent.DummyItem("9872", "9872", "884351", "Compressor de 200 L", "Faro", "N/A", procedureOne));
+                                        DummyContent.addItem(new DummyContent.DummyItem("2214", "2214", "660098", "Chiller da UA 12","Coimbra", "N/A", procedureOne));
+                                        DummyContent.addItem(new DummyContent.DummyItem("981", "981", "1221114", "Unidade X da Linha 2","Lisboa", "N/A", procedureOne));
+                                        DummyContent.addItem(new DummyContent.DummyItem("2213", "2213", "412104", "Ar Condicionado","Marinha Grande", "N/A", procedureOne));
+                                        DummyContent.addItem(new DummyContent.DummyItem("215", "215", "909042","Elevador Hidraúlico","Leiria", "N/A", procedureOne));
                                     }
                                     dummyItemArrayAdapter.notifyDataSetChanged();
                                 }

@@ -17,5 +17,10 @@
     <string name="designacao_equipamento">Designaçao</string>
     <string name="localizacao_equipamento">Localizaçao</string>
     <string name="prioridade_ordem">P</string>
+    <string name="lista_material">Lista de Material</string>
+    <string name="historico">Historico de Manutençoes</string>
+    <string name="standby">StandBy</string>
+    <string name="finalizar">Finalizar</string>
+    <string name="observacoes">Observações</string>
 
 </resources>

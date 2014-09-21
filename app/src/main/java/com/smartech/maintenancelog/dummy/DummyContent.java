@@ -45,19 +45,38 @@ public class DummyContent {
         public String designacaoEquipamento;
         public String localizacao;
         public String periodicidade;
+        public List<Procedure> procedures;
 
-        public DummyItem(String id, String numOrdem, String numEquipamento, String designacaoEquipamento, String localizacao, String periodicidade ) {
+        public DummyItem(String id, String numOrdem, String numEquipamento, String designacaoEquipamento, String localizacao, String periodicidade, List<Procedure> procedures ) {
             this.id = id;
             this.numOrdem = numOrdem;
             this.numEquipamento = numEquipamento;
             this.designacaoEquipamento = designacaoEquipamento;
             this.localizacao = localizacao;
             this.periodicidade = periodicidade;
+            this.procedures = procedures;
         }
 
         @Override
         public String toString() {
             return numOrdem;
+        }
+
+        public List<Procedure> getProcedures() {
+            return procedures;
+        }
+
+        public void setProcedures(List<Procedure> procedures) {
+            this.procedures = procedures;
+        }
+    }
+
+    public static class Procedure {
+        public String type;
+        public String text;
+        public Procedure(String type, String text){
+            this.type = type;
+            this.text = text;
         }
     }
 }
