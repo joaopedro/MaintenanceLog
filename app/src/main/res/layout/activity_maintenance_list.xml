@@ -5,20 +5,80 @@
     android:orientation="vertical">
 
 
-    <TextView
-        android:id="@android:id/empty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/empty_list"
-        android:layout_gravity="top|center_horizontal" />
 
-    <fragment
-        android:id="@+id/maintenance_list"
-        android:name="com.smartech.maintenancelog.MaintenanceListFragment"
-        tools:layout="@android:layout/list_content"
-        android:layout_width="match_parent"
+
+    <TableLayout
+        android:layout_width="fill_parent"
         android:layout_height="0dip"
-        android:layout_weight="1"/>
+        android:layout_weight="1">
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:gravity="center_horizontal"
+            android:layout_gravity="top"
+            android:layout_margin="0dp">
+            <TextView android:text="@string/num_ordem"
+                android:background="@drawable/cell_shape_head"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.6"
+                android:textColor="@android:color/background_light"
+                android:textStyle="bold"/>
+            <TextView android:text="@string/enum_equipamento"
+                android:background="@drawable/cell_shape_head"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.6"
+                android:textColor="@android:color/background_light"
+                android:textStyle="bold"/>
+            <TextView android:text="@string/designacao_equipamento"
+                android:background="@drawable/cell_shape_head"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:textColor="@android:color/background_light"
+                android:textStyle="bold"/>
+            <TextView android:text="@string/localizacao_equipamento"
+                android:background="@drawable/cell_shape_head"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"/>
+            <TextView android:text="@string/prioridade_ordem"
+                android:background="@drawable/cell_shape_head"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.2"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"/>
+        </TableRow>
+        <TableRow android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:gravity="center_horizontal"
+            android:background="@drawable/cell_shape"
+            android:layout_margin="0dp">
+            <TextView
+                android:id="@android:id/empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/empty_list"
+                android:layout_gravity="top|center_horizontal" />
+        </TableRow>
+        <fragment
+            android:id="@+id/maintenance_list"
+            android:name="com.smartech.maintenancelog.MaintenanceListFragment"
+            tools:layout="@android:layout/list_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1"/>
+
+    </TableLayout>
 
     <LinearLayout
         android:layout_width="fill_parent"

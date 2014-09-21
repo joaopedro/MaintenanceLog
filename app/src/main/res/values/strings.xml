@@ -12,5 +12,10 @@
     <string name="empty_list">Maintenance Activities not found. Please Reload</string>
     <string name="audit_mode">Audit Mode</string>
     <string name="load_data_success">Data Loaded</string>
+    <string name="num_ordem">Ordem</string>
+    <string name="enum_equipamento">Equip.</string>
+    <string name="designacao_equipamento">Designaçao</string>
+    <string name="localizacao_equipamento">Localizaçao</string>
+    <string name="prioridade_ordem">P</string>
 
 </resources>

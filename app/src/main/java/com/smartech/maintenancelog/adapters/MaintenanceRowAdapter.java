@@ -43,85 +43,35 @@ public class MaintenanceRowAdapter extends ArrayAdapter<DummyContent.DummyItem> 
  
             // 2. Get rowView from inflater
             View rowView = inflater.inflate(R.layout.layout_maintenance_row, parent, false);
- 
 
-            TextView labelView = (TextView) rowView.findViewById(R.id.maintenance_detail_label);
+            rowView.setPadding(0,0,0,0);
+            rowView.setBottom(0);
+            rowView.setPaddingRelative(0,0,0,0);
 
-            ImageView periodicityView = (ImageView) rowView.findViewById(R.id.maintenance_detail_periodicity);
+            TextView numeroDeOrdem = (TextView) rowView.findViewById(R.id.num_ordem);
+            TextView numeroDeEquipamento = (TextView) rowView.findViewById(R.id.enum_equipamento);
+            TextView designacaoEquipamento = (TextView) rowView.findViewById(R.id.designacao_equipamento);
+            TextView localizacao = (TextView) rowView.findViewById(R.id.localizacao_equipamento);
+            TextView periodicidade = (TextView) rowView.findViewById(R.id.perioridade_ordem);
 
- 
-            // 4. Set the text for textView 
-            labelView.setText(itemsArrayList.get(position).content);
+            // 4. Set the text for textView
+            numeroDeOrdem.setText(itemsArrayList.get(position).numOrdem);
+            numeroDeEquipamento.setText(itemsArrayList.get(position).numEquipamento);
+            designacaoEquipamento.setText(itemsArrayList.get(position).designacaoEquipamento);
+            localizacao.setText(itemsArrayList.get(position).localizacao);
+
 
             int anInt = randInt(1,4);
 
-            if(anInt==1) createDaily(periodicityView);
-            if(anInt==2) createWeekly(periodicityView);
-            if(anInt==3) createMonthly(periodicityView);
-            if(anInt==4) createYearly(periodicityView);
+            if(anInt==1) periodicidade.setText("D");
+            if(anInt==2) periodicidade.setText("S");
+            if(anInt==3) periodicidade.setText("M");
+            if(anInt==4) periodicidade.setText("A");
 
             // 5. retrn rowView
             return rowView;
         }
-
-    private void createDaily(ImageView periodicityView) {
-        Bitmap b = Bitmap.createBitmap(40, 50, Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(b);
-
-        Paint paint = new Paint();
-        paint.setColor(Color.BLACK);
-        paint.setStyle(Paint.Style.FILL);
-        paint.setTextSize(40);
-        paint.setTextAlign(Paint.Align.CENTER);
-        c.drawColor(Color.BLUE, PorterDuff.Mode.ADD);
-
-        c.drawText("D", 18, 40, paint);
-        periodicityView.setImageBitmap(b);
-    }
-    private void createWeekly(ImageView periodicityView) {
-        Bitmap b = Bitmap.createBitmap(40, 50, Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(b);
-
-        Paint paint = new Paint();
-        paint.setColor(Color.BLACK);
-        paint.setStyle(Paint.Style.FILL);
-        paint.setTextSize(40);
-        paint.setTextAlign(Paint.Align.CENTER);
-        c.drawColor(Color.LTGRAY, PorterDuff.Mode.ADD);
-
-        c.drawText("S", 18, 40, paint);
-        periodicityView.setImageBitmap(b);
-    }
-    private void createMonthly(ImageView periodicityView) {
-        Bitmap b = Bitmap.createBitmap(40, 50, Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(b);
-
-        Paint paint = new Paint();
-        paint.setColor(Color.BLACK);
-        paint.setStyle(Paint.Style.FILL);
-        paint.setTextSize(40);
-        paint.setTextAlign(Paint.Align.CENTER);
-        c.drawColor(Color.GREEN, PorterDuff.Mode.ADD);
-
-        c.drawText("M", 18, 40, paint);
-        periodicityView.setImageBitmap(b);
-    }
-    private void createYearly(ImageView periodicityView) {
-        Bitmap b = Bitmap.createBitmap(40, 50, Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(b);
-
-        Paint paint = new Paint();
-        paint.setColor(Color.BLACK);
-        paint.setStyle(Paint.Style.FILL);
-        paint.setTextSize(40);
-        paint.setTextAlign(Paint.Align.CENTER);
-        c.drawColor(Color.YELLOW, PorterDuff.Mode.ADD);
-
-        c.drawText("A", 18, 40, paint);
-        periodicityView.setImageBitmap(b);
-    }
-
-    private int randInt(int min, int max) {
+   private int randInt(int min, int max) {
 
         // NOTE: Usually this should be a field rather than a method
         // variable so that it is not re-seeded every call.

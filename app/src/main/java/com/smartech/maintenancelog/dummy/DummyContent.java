@@ -40,16 +40,24 @@ public class DummyContent {
      */
     public static class DummyItem {
         public String id;
-        public String content;
+        public String numOrdem;
+        public String numEquipamento;
+        public String designacaoEquipamento;
+        public String localizacao;
+        public String periodicidade;
 
-        public DummyItem(String id, String content) {
+        public DummyItem(String id, String numOrdem, String numEquipamento, String designacaoEquipamento, String localizacao, String periodicidade ) {
             this.id = id;
-            this.content = content;
+            this.numOrdem = numOrdem;
+            this.numEquipamento = numEquipamento;
+            this.designacaoEquipamento = designacaoEquipamento;
+            this.localizacao = localizacao;
+            this.periodicidade = periodicidade;
         }
 
         @Override
         public String toString() {
-            return content;
+            return numOrdem;
         }
     }
 }

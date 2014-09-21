@@ -2,26 +2,41 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:minHeight="50px"
     >
 
-
-    <TextView
-        android:id="@+id/maintenance_detail_label"
-        android:layout_width="wrap_content"
+    <TableRow
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceListItemSmall"
-        android:background="?android:attr/activatedBackgroundIndicator"
-        android:text="Ordem 12331 para Ar Condicionado em Leiria com Prioridade Alta"
-        android:layout_weight="1"
-        />
-
-    <ImageView
-        android:id="@+id/maintenance_detail_periodicity"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:minHeight="50px"
-        android:src="@drawable/abc_ic_clear"/>
+        android:layout_width="fill_parent"
+        android:gravity="center_horizontal">
+        <TextView android:id="@+id/num_ordem"
+            android:background="@drawable/cell_shape"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.6"/>
+        <TextView android:id="@+id/enum_equipamento"
+            android:background="@drawable/cell_shape"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.6"/>
+        <TextView android:id="@+id/designacao_equipamento"
+            android:background="@drawable/cell_shape"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"/>
+        <TextView android:id="@+id/localizacao_equipamento"
+            android:background="@drawable/cell_shape"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"/>
+        <TextView android:id="@+id/perioridade_ordem"
+            android:background="@drawable/cell_shape"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.2"/>
+    </TableRow>
 </LinearLayout>

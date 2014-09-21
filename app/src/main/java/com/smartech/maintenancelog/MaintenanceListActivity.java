@@ -52,6 +52,8 @@ public class MaintenanceListActivity extends Activity
         setContentView(R.layout.activity_maintenance_list);
 
         ListView lv = (ListView)findViewById(android.R.id.list);
+        lv.setDivider(null);
+
         TextView emptyText = (TextView)findViewById(android.R.id.empty);
         lv.setEmptyView(emptyText);
 
@@ -117,13 +119,20 @@ public class MaintenanceListActivity extends Activity
                                     ArrayAdapter<DummyContent.DummyItem> dummyItemArrayAdapter = ((MaintenanceListFragment) getFragmentManager()
                                             .findFragmentById(R.id.maintenance_list)).dummyItemArrayAdapter;
                                     if(DummyContent.ITEMS.size()==0){
-                                        DummyContent.addItem(new DummyContent.DummyItem("12331", "Ordem 12331 para Ar Condicionado em Leiria"));
-                                        DummyContent.addItem(new DummyContent.DummyItem("122", "Ordem 122 para Aspirador Indústrial em Lisboa"));
-                                        DummyContent.addItem(new DummyContent.DummyItem("9872", "Ordem 9872 para Compressor de 200 L em Faro"));
-                                        DummyContent.addItem(new DummyContent.DummyItem("2214", "Ordem 2214 para Chiller da UA 12 em Coimbra"));
-                                        DummyContent.addItem(new DummyContent.DummyItem("981", "Ordem 981 para Unidade X da Linha 2 em Lisboa"));
-                                        DummyContent.addItem(new DummyContent.DummyItem("2213", "Ordem 2213 para Ar Condicionado em Marinha Grande"));
-                                        DummyContent.addItem(new DummyContent.DummyItem("215", "Ordem 215 para Elevador Hidraúlico em Leiria"));
+                                        DummyContent.addItem(new DummyContent.DummyItem("12331", "12331", "98492", "Ar Condicionado","Leiria", "N/A"));
+                                        DummyContent.addItem(new DummyContent.DummyItem("122", "122", "23921", "Aspirador Indústrial","Lisboa", "N/A"));
+                                        DummyContent.addItem(new DummyContent.DummyItem("9872", "9872", "884351", "Compressor de 200 L", "Faro", "N/A"));
+                                        DummyContent.addItem(new DummyContent.DummyItem("2214", "2214", "660098", "Chiller da UA 12","Coimbra", "N/A"));
+                                        DummyContent.addItem(new DummyContent.DummyItem("981", "981", "1221114", "Unidade X da Linha 2","Lisboa", "N/A"));
+                                        DummyContent.addItem(new DummyContent.DummyItem("2213", "2213", "412104", "Ar Condicionado","Marinha Grande", "N/A"));
+                                        DummyContent.addItem(new DummyContent.DummyItem("215", "215", "909042","Elevador Hidraúlico","Leiria", "N/A"));
+                                        DummyContent.addItem(new DummyContent.DummyItem("12331", "12331", "98492", "Ar Condicionado","Leiria", "N/A"));
+                                        DummyContent.addItem(new DummyContent.DummyItem("122", "122", "23921", "Aspirador Indústrial","Lisboa", "N/A"));
+                                        DummyContent.addItem(new DummyContent.DummyItem("9872", "9872", "884351", "Compressor de 200 L", "Faro", "N/A"));
+                                        DummyContent.addItem(new DummyContent.DummyItem("2214", "2214", "660098", "Chiller da UA 12","Coimbra", "N/A"));
+                                        DummyContent.addItem(new DummyContent.DummyItem("981", "981", "1221114", "Unidade X da Linha 2","Lisboa", "N/A"));
+                                        DummyContent.addItem(new DummyContent.DummyItem("2213", "2213", "412104", "Ar Condicionado","Marinha Grande", "N/A"));
+                                        DummyContent.addItem(new DummyContent.DummyItem("215", "215", "909042","Elevador Hidraúlico","Leiria", "N/A"));
                                     }
                                     dummyItemArrayAdapter.notifyDataSetChanged();
                                 }
