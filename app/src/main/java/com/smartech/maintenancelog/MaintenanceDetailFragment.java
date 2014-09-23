@@ -1,10 +1,12 @@
 package com.smartech.maintenancelog;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -81,6 +83,16 @@ public class MaintenanceDetailFragment extends Fragment {
                 mItem.getProcedures());
 
         listProcedimentos.setAdapter(procedureRowAdapter);
+
+        final Button historyButton = (Button) rootView.findViewById(R.id.historico);
+
+        historyButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent detailIntent = new Intent(v.getContext(), MaintenanceHistory.class);
+                detailIntent.putExtra(MaintenanceHistory.ARG_ITEM, mItem.id);
+                startActivity(detailIntent);
+            }
+        });
 
         return rootView;
     }

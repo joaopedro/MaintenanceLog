@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 
 /**
@@ -49,6 +51,7 @@ public class MaintenanceDetailActivity extends Activity {
                     .add(R.id.maintenance_detail_container, fragment)
                     .commit();
         }
+
     }
 
     @Override

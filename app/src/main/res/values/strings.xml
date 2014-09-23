@@ -22,5 +22,8 @@
     <string name="standby">StandBy</string>
     <string name="finalizar">Finalizar</string>
     <string name="observacoes">Observações</string>
+    <string name="title_activity_maintenance_history">MaintenanceHistory</string>
+    <string name="next_maintenance">Sem Informação</string>
+    <string name="next_maintenance_label">Proxima Manutenção</string>
 
 </resources>

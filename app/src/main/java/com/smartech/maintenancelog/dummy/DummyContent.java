@@ -46,8 +46,12 @@ public class DummyContent {
         public String localizacao;
         public String periodicidade;
         public List<Procedure> procedures;
+        public List<Maintenance> history;
+        public Maintenance nextMaintenance;
 
-        public DummyItem(String id, String numOrdem, String numEquipamento, String designacaoEquipamento, String localizacao, String periodicidade, List<Procedure> procedures ) {
+
+        public DummyItem(String id, String numOrdem, String numEquipamento, String designacaoEquipamento, String localizacao, String periodicidade, List<Procedure> procedures,
+                         List<Maintenance> maintenancesHistory, Maintenance nextMaintenance) {
             this.id = id;
             this.numOrdem = numOrdem;
             this.numEquipamento = numEquipamento;
@@ -55,6 +59,8 @@ public class DummyContent {
             this.localizacao = localizacao;
             this.periodicidade = periodicidade;
             this.procedures = procedures;
+            this.history = maintenancesHistory;
+            this.nextMaintenance = nextMaintenance;
         }
 
         @Override
@@ -78,5 +84,16 @@ public class DummyContent {
             this.type = type;
             this.text = text;
         }
+    }
+
+    public static class Maintenance {
+        public String date;
+        public String tec;
+
+        public Maintenance(String date,String tec){
+            this.date = date;
+            this.tec = tec;
+        }
+
     }
 }
