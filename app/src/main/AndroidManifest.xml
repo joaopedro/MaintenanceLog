@@ -37,6 +37,10 @@
             android:name=".MaintenanceHistory"
             android:label="@string/title_activity_maintenance_history" >
         </activity>
+        <activity
+            android:name=".MaintenanceHist"
+            android:label="@string/title_activity_maintenance_hist" >
+        </activity>
     </application>
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->

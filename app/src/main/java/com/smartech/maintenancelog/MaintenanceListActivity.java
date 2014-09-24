@@ -197,6 +197,7 @@ public class MaintenanceListActivity extends Activity
             // fragment transaction.
             Bundle arguments = new Bundle();
             arguments.putString(MaintenanceDetailFragment.ARG_ITEM_ID, id);
+            arguments.putBoolean(MaintenanceDetailFragment.TWO_PANE, mTwoPane);
             MaintenanceDetailFragment fragment = new MaintenanceDetailFragment();
             fragment.setArguments(arguments);
             getFragmentManager().beginTransaction()
@@ -208,6 +209,7 @@ public class MaintenanceListActivity extends Activity
             // for the selected item ID.
             Intent detailIntent = new Intent(this, MaintenanceDetailActivity.class);
             detailIntent.putExtra(MaintenanceDetailFragment.ARG_ITEM_ID, id);
+            detailIntent.putExtra(MaintenanceDetailFragment.TWO_PANE, mTwoPane);
             startActivity(detailIntent);
         }
     }

@@ -27,6 +27,7 @@ public class MaintenanceDetailFragment extends Fragment {
      */
     public static final String ARG_ITEM_ID = "item_id";
     public static final String ARG_SCANNED_CODE = "Scanned_Code";
+    public static final String TWO_PANE = "two_pane";
 
     /**
      * The dummy content this fragment is presenting.
@@ -86,13 +87,7 @@ public class MaintenanceDetailFragment extends Fragment {
 
         final Button historyButton = (Button) rootView.findViewById(R.id.historico);
 
-        historyButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent detailIntent = new Intent(v.getContext(), MaintenanceHistory.class);
-                detailIntent.putExtra(MaintenanceHistory.ARG_ITEM, mItem.id);
-                startActivity(detailIntent);
-            }
-        });
+        historyButton.setOnClickListener((View.OnClickListener) getActivity());
 
         return rootView;
     }
