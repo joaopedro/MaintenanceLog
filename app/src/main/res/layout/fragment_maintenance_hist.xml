@@ -6,14 +6,16 @@
     tools:context="com.smartech.maintenancelog.MaintenanceHistory">
 
 
-    <Spinner
-        android:id="@+id/maintenance_history_spinner"
+    <ListView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
-
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:id="@+id/maintenance_history_list"
+        ></ListView>
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="0"
         android:orientation="vertical">
         <TextView
             android:layout_width="fill_parent"

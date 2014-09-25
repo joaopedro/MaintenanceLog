@@ -90,25 +90,18 @@ public class MaintenanceDetailActivity extends Activity
 
     @Override
     public void onClick(View view) {
-        if (mTwoPane) {
-            // In two-pane mode, show the detail view in this activity by
-            // adding or replacing the detail fragment using a
-            // fragment transaction.
-            Bundle arguments = new Bundle();
-            arguments.putString(MaintenanceHist.MaintenanceHistFragment.ITEM_ID, itemId);
-            MaintenanceHist.MaintenanceHistFragment fragment = new MaintenanceHist.MaintenanceHistFragment();
-            fragment.setArguments(arguments);
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.maintenance_detail_container, fragment)
-                    .commit();
-
-        } else {
+        if(view.getId() == R.id.finalizar || view.getId() == R.id.standby){
+            finish();
+        }else if(view.getId() == R.id.lista_material) {
+            Intent detailIntent = new Intent(this, MaintenanceParts.class);
+            detailIntent.putExtra(MaintenanceParts.ARG_ITEM_ID, itemId);
+            startActivity(detailIntent);
+        }else{
             // In single-pane mode, simply start the detail activity
             // for the selected item ID.
             Intent detailIntent = new Intent(this, MaintenanceHist.class);
             detailIntent.putExtra(MaintenanceHist.MaintenanceHistFragment.ITEM_ID, itemId);
             startActivity(detailIntent);
         }
-
     }
 }

@@ -86,8 +86,16 @@ public class MaintenanceDetailFragment extends Fragment {
         listProcedimentos.setAdapter(procedureRowAdapter);
 
         final Button historyButton = (Button) rootView.findViewById(R.id.historico);
-
         historyButton.setOnClickListener((View.OnClickListener) getActivity());
+
+        final Button finalizarButton = (Button) rootView.findViewById(R.id.finalizar);
+        finalizarButton.setOnClickListener((View.OnClickListener) getActivity());
+
+        final Button standbyButton = (Button) rootView.findViewById(R.id.standby);
+        standbyButton.setOnClickListener((View.OnClickListener) getActivity());
+
+        final Button partsButton = (Button) rootView.findViewById(R.id.lista_material);
+        partsButton.setOnClickListener((View.OnClickListener) getActivity());
 
         return rootView;
     }

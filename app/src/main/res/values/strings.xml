@@ -26,5 +26,7 @@
     <string name="next_maintenance">Sem Informação</string>
     <string name="next_maintenance_label">Proxima Manutenção</string>
     <string name="title_activity_maintenance_hist">Histórico de Manutenções</string>
+    <string name="title_activity_maintenance_parts">MaintenanceParts</string>
+    <string name="finalize">Finalizar</string>
 
 </resources>

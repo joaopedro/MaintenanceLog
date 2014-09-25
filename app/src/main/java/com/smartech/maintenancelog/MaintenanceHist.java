@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -105,7 +106,7 @@ public class MaintenanceHist extends Activity {
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_maintenance_hist, container, false);
 
-            Spinner spinner = (Spinner) rootView.findViewById(R.id.maintenance_history_spinner);
+            ListView listView = (ListView) rootView.findViewById(R.id.maintenance_history_list);
 // Create an ArrayAdapter using the string array and a default spinner layout
             List<String> treatedMaintenanceHistory = new ArrayList<String>();
 
@@ -113,11 +114,9 @@ public class MaintenanceHist extends Activity {
                 treatedMaintenanceHistory.add(mItem.numEquipamento + " | " + maintenance.date + " | "+maintenance.tec);
             }
 
-            ArrayAdapter<CharSequence> adapter = new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_item, treatedMaintenanceHistory);
-// Specify the layout to use when the list of choices appears
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            ArrayAdapter<CharSequence> adapter = new ArrayAdapter(getActivity(),R.layout.layout_maintenance_hist_row, treatedMaintenanceHistory);
 // Apply the adapter to the spinner
-            spinner.setAdapter(adapter);
+            listView.setAdapter(adapter);
 
             TextView nextMaintenance = (TextView) rootView.findViewById(R.id.next_maintenance);
             nextMaintenance.setText(mItem.numEquipamento + " | " + mItem.nextMaintenance.date + " | " + mItem.nextMaintenance.tec);

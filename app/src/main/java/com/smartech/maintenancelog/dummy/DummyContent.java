@@ -48,10 +48,11 @@ public class DummyContent {
         public List<Procedure> procedures;
         public List<Maintenance> history;
         public Maintenance nextMaintenance;
+        public List<Part> parts;
 
 
         public DummyItem(String id, String numOrdem, String numEquipamento, String designacaoEquipamento, String localizacao, String periodicidade, List<Procedure> procedures,
-                         List<Maintenance> maintenancesHistory, Maintenance nextMaintenance) {
+                         List<Maintenance> maintenancesHistory, Maintenance nextMaintenance, List<Part> parts) {
             this.id = id;
             this.numOrdem = numOrdem;
             this.numEquipamento = numEquipamento;
@@ -61,6 +62,7 @@ public class DummyContent {
             this.procedures = procedures;
             this.history = maintenancesHistory;
             this.nextMaintenance = nextMaintenance;
+            this.parts = parts;
         }
 
         @Override
@@ -96,4 +98,15 @@ public class DummyContent {
         }
 
     }
+
+    public static class Part {
+        public long id;
+        public String name;
+
+        public Part(long id, String name){
+            this.name = name;
+        }
+
+    }
+
 }

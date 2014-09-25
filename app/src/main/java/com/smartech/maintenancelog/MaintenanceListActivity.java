@@ -136,23 +136,49 @@ public class MaintenanceListActivity extends Activity
                                         maintenanceHistory.add(new DummyContent.Maintenance("03-02-2014", "João Pedro"));
                                         maintenanceHistory.add(new DummyContent.Maintenance("05-05-2014", "Manuel Almeida"));
                                         maintenanceHistory.add(new DummyContent.Maintenance("14-07-2014", "Manuel Almeida"));
+                                        maintenanceHistory.add(new DummyContent.Maintenance("01-03-2013", "João Pedro"));
+                                        maintenanceHistory.add(new DummyContent.Maintenance("12-05-2013", "António Castro"));
+                                        maintenanceHistory.add(new DummyContent.Maintenance("20-11-2013", "Manuel Almeida"));
+                                        maintenanceHistory.add(new DummyContent.Maintenance("03-02-2014", "João Pedro"));
+                                        maintenanceHistory.add(new DummyContent.Maintenance("05-05-2014", "Manuel Almeida"));
+                                        maintenanceHistory.add(new DummyContent.Maintenance("14-07-2014", "Manuel Almeida"));
+                                        maintenanceHistory.add(new DummyContent.Maintenance("01-03-2013", "João Pedro"));
+                                        maintenanceHistory.add(new DummyContent.Maintenance("12-05-2013", "António Castro"));
+                                        maintenanceHistory.add(new DummyContent.Maintenance("20-11-2013", "Manuel Almeida"));
+                                        maintenanceHistory.add(new DummyContent.Maintenance("03-02-2014", "João Pedro"));
+                                        maintenanceHistory.add(new DummyContent.Maintenance("05-05-2014", "Manuel Almeida"));
+                                        maintenanceHistory.add(new DummyContent.Maintenance("14-07-2014", "Manuel Almeida"));
+                                        maintenanceHistory.add(new DummyContent.Maintenance("05-05-2014", "Manuel Almeida"));
+                                        maintenanceHistory.add(new DummyContent.Maintenance("14-07-2014", "Manuel Almeida"));
+                                        maintenanceHistory.add(new DummyContent.Maintenance("01-03-2013", "João Pedro"));
+                                        maintenanceHistory.add(new DummyContent.Maintenance("12-05-2013", "António Castro"));
+                                        maintenanceHistory.add(new DummyContent.Maintenance("20-11-2013", "Manuel Almeida"));
+                                        maintenanceHistory.add(new DummyContent.Maintenance("03-02-2014", "João Pedro"));
+                                        maintenanceHistory.add(new DummyContent.Maintenance("05-05-2014", "Manuel Almeida"));
 
                                         DummyContent.Maintenance nextMaintenance = new DummyContent.Maintenance("24-10-2014", "João Pedro");
 
-                                        DummyContent.addItem(new DummyContent.DummyItem("12331", "12331", "98492", "Ar Condicionado","Leiria", "N/A", procedureOne,maintenanceHistory, nextMaintenance));
-                                        DummyContent.addItem(new DummyContent.DummyItem("122", "122", "23921", "Aspirador Indústrial","Lisboa", "N/A", procedureOne,maintenanceHistory, nextMaintenance));
-                                        DummyContent.addItem(new DummyContent.DummyItem("9872", "9872", "884351", "Compressor de 200 L", "Faro", "N/A", procedureOne,maintenanceHistory, nextMaintenance));
-                                        DummyContent.addItem(new DummyContent.DummyItem("2214", "2214", "660098", "Chiller da UA 12","Coimbra", "N/A", procedureOne,maintenanceHistory, nextMaintenance));
-                                        DummyContent.addItem(new DummyContent.DummyItem("50021653", "981", "50021653", "Unidade X da Linha 2","Lisboa", "N/A", procedureOne,maintenanceHistory, nextMaintenance));
-                                        DummyContent.addItem(new DummyContent.DummyItem("2213", "2213", "412104", "Ar Condicionado","Marinha Grande", "N/A", procedureOne,maintenanceHistory, nextMaintenance));
-                                        DummyContent.addItem(new DummyContent.DummyItem("215", "215", "909042","Elevador Hidraúlico","Leiria", "N/A", procedureOne,maintenanceHistory, nextMaintenance));
-                                        DummyContent.addItem(new DummyContent.DummyItem("12331", "12331", "98492", "Ar Condicionado","Leiria", "N/A", procedureOne,maintenanceHistory, nextMaintenance));
-                                        DummyContent.addItem(new DummyContent.DummyItem("122", "122", "23921", "Aspirador Indústrial","Lisboa", "N/A", procedureOne,maintenanceHistory, nextMaintenance));
-                                        DummyContent.addItem(new DummyContent.DummyItem("9872", "9872", "884351", "Compressor de 200 L", "Faro", "N/A", procedureOne,maintenanceHistory, nextMaintenance));
-                                        DummyContent.addItem(new DummyContent.DummyItem("2214", "2214", "660098", "Chiller da UA 12","Coimbra", "N/A", procedureOne,maintenanceHistory, nextMaintenance));
-                                        DummyContent.addItem(new DummyContent.DummyItem("981", "981", "1221114", "Unidade X da Linha 2","Lisboa", "N/A", procedureOne,maintenanceHistory, nextMaintenance));
-                                        DummyContent.addItem(new DummyContent.DummyItem("2213", "2213", "412104", "Ar Condicionado","Marinha Grande", "N/A", procedureOne,maintenanceHistory, nextMaintenance));
-                                        DummyContent.addItem(new DummyContent.DummyItem("215", "215", "909042","Elevador Hidraúlico","Leiria", "N/A", procedureOne,maintenanceHistory, nextMaintenance));
+                                        List<DummyContent.Part> parts = new ArrayList<DummyContent.Part>();
+                                        parts.add(new DummyContent.Part(1, "Peça rwe2"));
+                                        parts.add(new DummyContent.Part(2,"Consumível asd as"));
+                                        parts.add(new DummyContent.Part(3,"Peça xpto 33"));
+                                        parts.add(new DummyContent.Part(4,"Peça re re re"));
+                                        parts.add(new DummyContent.Part(5,"Substituivél asa "));
+                                        parts.add(new DummyContent.Part(6,"Peça ie oiweo2"));
+
+                                        DummyContent.addItem(new DummyContent.DummyItem("12331", "12331", "98492", "Ar Condicionado","Leiria", "N/A", procedureOne,maintenanceHistory, nextMaintenance, parts));
+                                        DummyContent.addItem(new DummyContent.DummyItem("122", "122", "23921", "Aspirador Indústrial","Lisboa", "N/A", procedureOne,maintenanceHistory, nextMaintenance, parts));
+                                        DummyContent.addItem(new DummyContent.DummyItem("9872", "9872", "884351", "Compressor de 200 L", "Faro", "N/A", procedureOne,maintenanceHistory, nextMaintenance, parts));
+                                        DummyContent.addItem(new DummyContent.DummyItem("2214", "2214", "660098", "Chiller da UA 12","Coimbra", "N/A", procedureOne,maintenanceHistory, nextMaintenance, parts));
+                                        DummyContent.addItem(new DummyContent.DummyItem("50021653", "981", "50021653", "Unidade X da Linha 2","Lisboa", "N/A", procedureOne,maintenanceHistory, nextMaintenance, parts));
+                                        DummyContent.addItem(new DummyContent.DummyItem("2213", "2213", "412104", "Ar Condicionado","Marinha Grande", "N/A", procedureOne,maintenanceHistory, nextMaintenance, parts));
+                                        DummyContent.addItem(new DummyContent.DummyItem("215", "215", "909042","Elevador Hidraúlico","Leiria", "N/A", procedureOne,maintenanceHistory, nextMaintenance, parts));
+                                        DummyContent.addItem(new DummyContent.DummyItem("12331", "12331", "98492", "Ar Condicionado","Leiria", "N/A", procedureOne,maintenanceHistory, nextMaintenance, parts));
+                                        DummyContent.addItem(new DummyContent.DummyItem("122", "122", "23921", "Aspirador Indústrial","Lisboa", "N/A", procedureOne,maintenanceHistory, nextMaintenance, parts));
+                                        DummyContent.addItem(new DummyContent.DummyItem("2214", "2214", "660098", "Chiller da UA 12","Coimbra", "N/A", procedureOne,maintenanceHistory, nextMaintenance, parts));
+                                        DummyContent.addItem(new DummyContent.DummyItem("981", "981", "1221114", "Unidade X da Linha 2","Lisboa", "N/A", procedureOne,maintenanceHistory, nextMaintenance, parts));
+                                        DummyContent.addItem(new DummyContent.DummyItem("2213", "2213", "412104", "Ar Condicionado","Marinha Grande", "N/A", procedureOne,maintenanceHistory, nextMaintenance, parts));
+                                        DummyContent.addItem(new DummyContent.DummyItem("215", "215", "909042","Elevador Hidraúlico","Leiria", "N/A", procedureOne,maintenanceHistory, nextMaintenance, parts));
                                     }
                                     dummyItemArrayAdapter.notifyDataSetChanged();
                                 }
