@@ -203,7 +203,7 @@ public class MaintenanceListActivity extends Activity
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-        if (scanResult != null) {
+        if (scanResult.getContents() != null) {
             Intent detailIntent = new Intent(this, MaintenanceDetailActivity.class);
             detailIntent.putExtra(MaintenanceDetailFragment.ARG_SCANNED_CODE, scanResult.getContents());
             startActivity(detailIntent);        }
