@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.smartech.maintenancelog.adapters.HistoryRowAdapter;
 import com.smartech.maintenancelog.dummy.DummyContent;
 
 import java.util.ArrayList;
@@ -55,23 +56,10 @@ public class MaintenanceHist extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            // This ID represents the Home or Up button. In the case of this
-            // activity, the Up button is shown. Use NavUtils to allow users
-            // to navigate up one level in the application structure. For
-            // more details, see the Navigation pattern on Android Design:
-            //
-            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-            //
-//            Intent intent = new Intent(this, MaintenanceListActivity.class);
-//            intent.putExtra(MaintenanceDetailFragment.ARG_ITEM_ID, itemId);
-//            intent.putExtra(MaintenanceDetailFragment.TWO_PANE, mTwoPane);
 
-//            NavUtils.navigateUpFromSameTask(this);
             finish();
             return true;
         }
@@ -107,14 +95,8 @@ public class MaintenanceHist extends Activity {
             View rootView = inflater.inflate(R.layout.fragment_maintenance_hist, container, false);
 
             ListView listView = (ListView) rootView.findViewById(R.id.maintenance_history_list);
-// Create an ArrayAdapter using the string array and a default spinner layout
-            List<String> treatedMaintenanceHistory = new ArrayList<String>();
 
-            for (DummyContent.Maintenance maintenance : mItem.history) {
-                treatedMaintenanceHistory.add(mItem.numEquipamento + " | " + maintenance.date + " | "+maintenance.tec);
-            }
-
-            ArrayAdapter<CharSequence> adapter = new ArrayAdapter(getActivity(),R.layout.layout_maintenance_hist_row, treatedMaintenanceHistory);
+            HistoryRowAdapter adapter = new HistoryRowAdapter(getActivity(), mItem.history, mItem.numEquipamento);
 // Apply the adapter to the spinner
             listView.setAdapter(adapter);
 
