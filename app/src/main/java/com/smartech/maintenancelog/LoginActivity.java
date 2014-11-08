@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
-import android.content.ContentResolver;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -26,6 +25,25 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
+import com.smartech.maintenancelog.api.SyncLoginsTask;
+import com.smartech.maintenancelog.db.DatabaseHelper;
+import com.smartech.maintenancelog.db.Login;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,8 +52,7 @@ import java.util.List;
  * A login screen that offers login via email/password.
 
  */
-public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
-
+public class LoginActivity extends OrmLiteBaseActivity<DatabaseHelper> implements LoaderCallbacks<Cursor>{
     /**
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
@@ -62,7 +79,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
-
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -227,7 +243,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    public class UserLoginTask extends AsyncTask<Void, Void, String> {
 
         private final String mEmail;
         private final String mPassword;
@@ -238,47 +254,47 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
+        protected String doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
+            populateDatabase(getLogins());
+            List<Login> logins = getHelper().getSimpleDataDao().queryForAll();
+            for (Login login : logins) {
+                if (login.getUser().equals(mEmail) && login.getPassword().equals(mPassword)) {
                     // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
+                    return login.getPerfil();
                 }
             }
 
             // TODO: register the new account here.
-            return true;
+            return "fail";
         }
 
         @Override
-        protected void onPostExecute(final Boolean success) {
-            super.onPostExecute(success);
+        protected void onPostExecute(final String perfil) {
+            super.onPostExecute(perfil);
 
             mAuthTask = null;
             showProgress(false);
 
-            if (success) {
-                if(mEmail.equals("tec")){
+            if (!perfil.equals("fail")) {
+                if(perfil.equals("tec")){
                     Intent intent = new Intent(LoginActivity.this, MaintenanceListActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     getApplicationContext().startActivity(intent);
-                }else if(mEmail.equals("audit")){
+
+                    finish();
+                }else if(perfil.equals("aud")){
                     Intent intent = new Intent(LoginActivity.this, AuditMainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     getApplicationContext().startActivity(intent);
-                }
 
-                finish();
+                    finish();
+                }else{
+                    mPasswordView.setError(getString(R.string.error_incorrect_password));
+                    mPasswordView.requestFocus();
+
+                }
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
@@ -289,6 +305,44 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
         protected void onCancelled() {
             mAuthTask = null;
             showProgress(false);
+        }
+
+        private String getLogins(){
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpResponse response;
+            String responseString = null;
+            try {
+                response = httpclient.execute(new HttpGet("http://176.111.107.200:8080/login"));
+                StatusLine statusLine = response.getStatusLine();
+                if(statusLine.getStatusCode() == HttpStatus.SC_OK){
+                    ByteArrayOutputStream out = new ByteArrayOutputStream();
+                    response.getEntity().writeTo(out);
+                    out.close();
+                    responseString = out.toString();
+                } else{
+                    //Closes the connection.
+                    response.getEntity().getContent().close();
+                    throw new IOException(statusLine.getReasonPhrase());
+                }
+            } catch (ClientProtocolException e) {
+                //TODO Handle problems..
+            } catch (IOException e) {
+                //TODO Handle problems..
+            }
+
+            return responseString;
+        }
+
+        private void populateDatabase(String json){
+            Gson gson = new Gson();
+
+            List<Login> logins = gson.fromJson(json, new TypeToken<List<Login>>(){}.getType());
+
+            for (Login login : logins) {
+                if(!getHelper().getSimpleDataDao().idExists(login.getId())){
+                    getHelper().getSimpleDataDao().create(login);
+                }
+            }
         }
     }
 }
