@@ -3,7 +3,6 @@ package com.smartech.maintenancelog;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -11,11 +10,11 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,21 +28,18 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
-import com.smartech.maintenancelog.api.SyncLoginsTask;
 import com.smartech.maintenancelog.db.DatabaseHelper;
 import com.smartech.maintenancelog.db.Login;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -257,8 +253,14 @@ public class LoginActivity extends OrmLiteBaseActivity<DatabaseHelper> implement
         protected String doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
-            populateDatabase(getLogins());
-            List<Login> logins = getHelper().getSimpleDataDao().queryForAll();
+            try {
+                String logins = getLogins();
+                populateDatabase(logins);
+            } catch (IOException e) {
+                Log.i("Logins","Unable to get logins from server. Using previous loaded logins!");
+            }
+
+            List<Login> logins = getHelper().getLoginRuntimeDao().queryForAll();
             for (Login login : logins) {
                 if (login.getUser().equals(mEmail) && login.getPassword().equals(mPassword)) {
                     // Account exists, return true if the password matches.
@@ -307,27 +309,21 @@ public class LoginActivity extends OrmLiteBaseActivity<DatabaseHelper> implement
             showProgress(false);
         }
 
-        private String getLogins(){
+        private String getLogins() throws IOException {
             HttpClient httpclient = new DefaultHttpClient();
             HttpResponse response;
             String responseString = null;
-            try {
-                response = httpclient.execute(new HttpGet("http://176.111.107.200:8080/login"));
-                StatusLine statusLine = response.getStatusLine();
-                if(statusLine.getStatusCode() == HttpStatus.SC_OK){
-                    ByteArrayOutputStream out = new ByteArrayOutputStream();
-                    response.getEntity().writeTo(out);
-                    out.close();
-                    responseString = out.toString();
-                } else{
-                    //Closes the connection.
-                    response.getEntity().getContent().close();
-                    throw new IOException(statusLine.getReasonPhrase());
-                }
-            } catch (ClientProtocolException e) {
-                //TODO Handle problems..
-            } catch (IOException e) {
-                //TODO Handle problems..
+            response = httpclient.execute(new HttpGet("http://176.111.107.200:8080/login"));
+            StatusLine statusLine = response.getStatusLine();
+            if(statusLine.getStatusCode() == HttpStatus.SC_OK){
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                response.getEntity().writeTo(out);
+                out.close();
+                responseString = out.toString();
+            } else{
+                //Closes the connection.
+                response.getEntity().getContent().close();
+                throw new IOException(statusLine.getReasonPhrase());
             }
 
             return responseString;
@@ -335,13 +331,12 @@ public class LoginActivity extends OrmLiteBaseActivity<DatabaseHelper> implement
 
         private void populateDatabase(String json){
             Gson gson = new Gson();
-
             List<Login> logins = gson.fromJson(json, new TypeToken<List<Login>>(){}.getType());
 
+            getHelper().getLoginRuntimeDao().delete(getHelper().getLoginRuntimeDao().queryForAll());
+
             for (Login login : logins) {
-                if(!getHelper().getSimpleDataDao().idExists(login.getId())){
-                    getHelper().getSimpleDataDao().create(login);
-                }
+                getHelper().getLoginRuntimeDao().create(login);
             }
         }
     }

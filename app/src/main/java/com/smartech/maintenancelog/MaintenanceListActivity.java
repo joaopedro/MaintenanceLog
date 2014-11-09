@@ -5,9 +5,11 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -15,10 +17,26 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
+import com.smartech.maintenancelog.adapters.MaintenanceRowAdapter;
+import com.smartech.maintenancelog.db.DatabaseHelper;
+import com.smartech.maintenancelog.db.Login;
+import com.smartech.maintenancelog.db.Ordem;
 import com.smartech.maintenancelog.dummy.DummyContent;
 import com.smartech.maintenancelog.integration.zxing.IntentIntegrator;
 import com.smartech.maintenancelog.integration.zxing.IntentResult;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,8 +57,8 @@ import java.util.List;
  * {@link MaintenanceListFragment.Callbacks} interface
  * to listen for item selections.
  */
-public class MaintenanceListActivity extends Activity
-        implements MaintenanceListFragment.Callbacks {
+public class MaintenanceListActivity extends OrmLiteBaseActivity<DatabaseHelper>
+implements MaintenanceListFragment.Callbacks {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -80,114 +98,11 @@ public class MaintenanceListActivity extends Activity
         syncButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 progress.setMessage("Reloading data... ");
-                progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                progress.setIndeterminate(false);
+                progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progress.setIndeterminate(true);
                 progress.show();
 
-                final int totalProgressTime = 100;
-
-                final Thread t = new Thread(){
-
-                    @Override
-                    public void run(){
-
-                        int jumpTime = 0;
-                        while(jumpTime < totalProgressTime){
-                            try {
-                                sleep(200);
-                                jumpTime += 5;
-                                progress.setProgress(jumpTime);
-                            } catch (InterruptedException e) {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
-                            }
-
-                        }
-
-                        // ok, file is downloaded,
-                        if (jumpTime >= 100) {
-
-                            // sleep 2 seconds, so that you can see the 100%
-                            try {
-                                Thread.sleep(1000);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-
-                            // close the progress bar dialog
-                            progress.dismiss();
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    ArrayAdapter<DummyContent.DummyItem> dummyItemArrayAdapter = ((MaintenanceListFragment) getFragmentManager()
-                                            .findFragmentById(R.id.maintenance_list)).dummyItemArrayAdapter;
-                                    if(DummyContent.ITEMS.size()==0){
-                                        List<DummyContent.Procedure> procedureOne = new ArrayList<DummyContent.Procedure>();
-                                        procedureOne.add(new DummyContent.Procedure("CHECK", "Verificar Pressão do sensor X"));
-                                        procedureOne.add(new DummyContent.Procedure("CHECK", "Verificar Pressão do sensor Y"));
-                                        procedureOne.add(new DummyContent.Procedure("INFO", "Ter atenção ao sentido da Rosca"));
-                                        procedureOne.add(new DummyContent.Procedure("CHECK", "Verificar as afinações"));
-                                        procedureOne.add(new DummyContent.Procedure("INPUT", "Recolher valor WIS"));
-
-                                        List<DummyContent.Maintenance> maintenanceHistory = new ArrayList<DummyContent.Maintenance>();
-                                        maintenanceHistory.add(new DummyContent.Maintenance("01-03-2013", "João Pedro"));
-                                        maintenanceHistory.add(new DummyContent.Maintenance("12-05-2013", "António Castro"));
-                                        maintenanceHistory.add(new DummyContent.Maintenance("20-11-2013", "Manuel Almeida"));
-                                        maintenanceHistory.add(new DummyContent.Maintenance("03-02-2014", "João Pedro"));
-                                        maintenanceHistory.add(new DummyContent.Maintenance("05-05-2014", "Manuel Almeida"));
-                                        maintenanceHistory.add(new DummyContent.Maintenance("14-07-2014", "Manuel Almeida"));
-                                        maintenanceHistory.add(new DummyContent.Maintenance("01-03-2013", "João Pedro"));
-                                        maintenanceHistory.add(new DummyContent.Maintenance("12-05-2013", "António Castro"));
-                                        maintenanceHistory.add(new DummyContent.Maintenance("20-11-2013", "Manuel Almeida"));
-                                        maintenanceHistory.add(new DummyContent.Maintenance("03-02-2014", "João Pedro"));
-                                        maintenanceHistory.add(new DummyContent.Maintenance("05-05-2014", "Manuel Almeida"));
-                                        maintenanceHistory.add(new DummyContent.Maintenance("14-07-2014", "Manuel Almeida"));
-                                        maintenanceHistory.add(new DummyContent.Maintenance("01-03-2013", "João Pedro"));
-                                        maintenanceHistory.add(new DummyContent.Maintenance("12-05-2013", "António Castro"));
-                                        maintenanceHistory.add(new DummyContent.Maintenance("20-11-2013", "Manuel Almeida"));
-                                        maintenanceHistory.add(new DummyContent.Maintenance("03-02-2014", "João Pedro"));
-                                        maintenanceHistory.add(new DummyContent.Maintenance("05-05-2014", "Manuel Almeida"));
-                                        maintenanceHistory.add(new DummyContent.Maintenance("14-07-2014", "Manuel Almeida"));
-                                        maintenanceHistory.add(new DummyContent.Maintenance("05-05-2014", "Manuel Almeida"));
-                                        maintenanceHistory.add(new DummyContent.Maintenance("14-07-2014", "Manuel Almeida"));
-                                        maintenanceHistory.add(new DummyContent.Maintenance("01-03-2013", "João Pedro"));
-                                        maintenanceHistory.add(new DummyContent.Maintenance("12-05-2013", "António Castro"));
-                                        maintenanceHistory.add(new DummyContent.Maintenance("20-11-2013", "Manuel Almeida"));
-                                        maintenanceHistory.add(new DummyContent.Maintenance("03-02-2014", "João Pedro"));
-                                        maintenanceHistory.add(new DummyContent.Maintenance("05-05-2014", "Manuel Almeida"));
-
-                                        DummyContent.Maintenance nextMaintenance = new DummyContent.Maintenance("24-10-2014", "João Pedro");
-
-                                        List<DummyContent.Part> parts = new ArrayList<DummyContent.Part>();
-                                        parts.add(new DummyContent.Part(1, "Peça rwe2"));
-                                        parts.add(new DummyContent.Part(2,"Consumível asd as"));
-                                        parts.add(new DummyContent.Part(3,"Peça xpto 33"));
-                                        parts.add(new DummyContent.Part(4,"Peça re re re"));
-                                        parts.add(new DummyContent.Part(5,"Substituivél asa "));
-                                        parts.add(new DummyContent.Part(6,"Peça ie oiweo2"));
-
-                                        DummyContent.addItem(new DummyContent.DummyItem("12331", "12331", "98492", "Ar Condicionado","Leiria", "N/A", procedureOne,maintenanceHistory, nextMaintenance, parts));
-                                        DummyContent.addItem(new DummyContent.DummyItem("122", "122", "23921", "Aspirador Indústrial","Lisboa", "N/A", procedureOne,maintenanceHistory, nextMaintenance, parts));
-                                        DummyContent.addItem(new DummyContent.DummyItem("9872", "9872", "884351", "Compressor de 200 L", "Faro", "N/A", procedureOne,maintenanceHistory, nextMaintenance, parts));
-                                        DummyContent.addItem(new DummyContent.DummyItem("2214", "2214", "660098", "Chiller da UA 12","Coimbra", "N/A", procedureOne,maintenanceHistory, nextMaintenance, parts));
-                                        DummyContent.addItem(new DummyContent.DummyItem("50021653", "981", "50021653", "Unidade X da Linha 2","Lisboa", "N/A", procedureOne,maintenanceHistory, nextMaintenance, parts));
-                                        DummyContent.addItem(new DummyContent.DummyItem("2213", "2213", "412104", "Ar Condicionado","Marinha Grande", "N/A", procedureOne,maintenanceHistory, nextMaintenance, parts));
-                                        DummyContent.addItem(new DummyContent.DummyItem("215", "215", "909042","Elevador Hidraúlico","Leiria", "N/A", procedureOne,maintenanceHistory, nextMaintenance, parts));
-                                        DummyContent.addItem(new DummyContent.DummyItem("12331", "12331", "98492", "Ar Condicionado","Leiria", "N/A", procedureOne,maintenanceHistory, nextMaintenance, parts));
-                                        DummyContent.addItem(new DummyContent.DummyItem("122", "122", "23921", "Aspirador Indústrial","Lisboa", "N/A", procedureOne,maintenanceHistory, nextMaintenance, parts));
-                                        DummyContent.addItem(new DummyContent.DummyItem("2214", "2214", "660098", "Chiller da UA 12","Coimbra", "N/A", procedureOne,maintenanceHistory, nextMaintenance, parts));
-                                        DummyContent.addItem(new DummyContent.DummyItem("981", "981", "1221114", "Unidade X da Linha 2","Lisboa", "N/A", procedureOne,maintenanceHistory, nextMaintenance, parts));
-                                        DummyContent.addItem(new DummyContent.DummyItem("2213", "2213", "412104", "Ar Condicionado","Marinha Grande", "N/A", procedureOne,maintenanceHistory, nextMaintenance, parts));
-                                        DummyContent.addItem(new DummyContent.DummyItem("215", "215", "909042","Elevador Hidraúlico","Leiria", "N/A", procedureOne,maintenanceHistory, nextMaintenance, parts));
-                                    }
-                                    dummyItemArrayAdapter.notifyDataSetChanged();
-                                }
-                            });
-                        }
-
-                    }
-                };
-                t.start();
+                new SyncOrdemTask().execute((Void) null);
             }
         });
 
@@ -239,4 +154,68 @@ public class MaintenanceListActivity extends Activity
             startActivity(detailIntent);
         }
     }
+
+    public class SyncOrdemTask extends AsyncTask<Void, Void, String> {
+
+
+        @Override
+        protected String doInBackground(Void... params) {
+            String result = "ok";
+
+            try {
+                populateOrdensDatabase(getOrdens());
+            } catch (IOException e) {
+                Log.i("Ordens", "Unable to get ordens from server!");
+                result = "fail";
+            }
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    MaintenanceRowAdapter maintenanceRowAdapter = ((MaintenanceListFragment) getFragmentManager()
+                            .findFragmentById(R.id.maintenance_list)).dummyItemArrayAdapter;
+                    maintenanceRowAdapter.clear();
+                    maintenanceRowAdapter.addAll(getHelper().getOrdemRuntimeDao().queryForEq("tecNumber", "10000004"));
+                }
+            });
+
+            return result;
+        }
+        @Override
+        protected void onPostExecute(final String perfil) {
+            // close the progress bar dialog
+            progress.dismiss();
+        }
+        private String getOrdens() throws IOException {
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpResponse response;
+            String responseString = null;
+            response = httpclient.execute(new HttpGet("http://176.111.107.200:8080/ordem/tecnico/10000004"));
+            StatusLine statusLine = response.getStatusLine();
+            if(statusLine.getStatusCode() == HttpStatus.SC_OK){
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                response.getEntity().writeTo(out);
+                out.close();
+                responseString = out.toString();
+            } else{
+                //Closes the connection.
+                response.getEntity().getContent().close();
+                throw new IOException(statusLine.getReasonPhrase());
+            }
+
+            return responseString;
+        }
+
+        private void populateOrdensDatabase(String json){
+            Gson gson = new Gson();
+            List<Ordem> ordens = gson.fromJson(json, new TypeToken<List<Ordem>>(){}.getType());
+
+            for (Ordem ordem : ordens) {
+                if(!getHelper().getOrdemRuntimeDao().idExists(ordem.getId())){
+                    getHelper().getOrdemRuntimeDao().create(ordem);
+                    getHelper().getEquipamentoRuntimeDao().create(ordem.getEquipament());
+                }
+            }
+        }
+    };
 }

@@ -65,8 +65,8 @@ public class SyncLoginsTask extends AsyncTask<Void, String, String> {
         List<Login> logins = gson.fromJson(result, new TypeToken<List<Login>>(){}.getType());
 
         for (Login login : logins) {
-            if(!dbHelper.getSimpleDataDao().idExists(login.getId())){
-                dbHelper.getSimpleDataDao().create(login);
+            if(!dbHelper.getLoginRuntimeDao().idExists(login.getId())){
+                dbHelper.getLoginRuntimeDao().create(login);
             }
         }
     }

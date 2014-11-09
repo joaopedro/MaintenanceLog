@@ -24,9 +24,17 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     // any time you make changes to your database objects, you may have to increase the database version
     private static final int DATABASE_VERSION = 1;
 
-    // the DAO object we use to access the SimpleData table
-    private Dao<Login, Long> simpleDao = null;
-    private RuntimeExceptionDao<Login, Long> simpleRuntimeDao = null;
+    // the DAO object we use to access the Login table
+    private Dao<Login, Long> loginDao = null;
+    private RuntimeExceptionDao<Login, Long> loginRuntimeDao = null;
+
+    // the DAO object we use to access the Ordem table
+    private Dao<Ordem, Long> ordemDao = null;
+    private RuntimeExceptionDao<Ordem, Long> ordemRuntimeDao = null;
+
+    // the DAO object we use to access the Equipamento table
+    private Dao<Equipamento, Long> equipamentoDao = null;
+    private RuntimeExceptionDao<Equipamento, Long> equipamentoRuntimeDao = null;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -41,6 +49,11 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         try {
             Log.i(DatabaseHelper.class.getName(), "onCreate");
             TableUtils.createTable(connectionSource, Login.class);
+            TableUtils.createTable(connectionSource, Part.class);
+            TableUtils.createTable(connectionSource, Activity.class);
+            TableUtils.createTable(connectionSource, HistoryEntry.class);
+            TableUtils.createTable(connectionSource, Equipamento.class);
+            TableUtils.createTable(connectionSource, Ordem.class);
         } catch (SQLException e) {
             Log.e(DatabaseHelper.class.getName(), "Can't create database", e);
             throw new RuntimeException(e);
@@ -58,6 +71,11 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         try {
             Log.i(DatabaseHelper.class.getName(), "onUpgrade");
             TableUtils.dropTable(connectionSource, Login.class, true);
+            TableUtils.dropTable(connectionSource, Ordem.class, true);
+            TableUtils.dropTable(connectionSource, Equipamento.class, true);
+            TableUtils.dropTable(connectionSource, HistoryEntry.class, true);
+            TableUtils.dropTable(connectionSource, Part.class, true);
+            TableUtils.dropTable(connectionSource, Activity.class, true);
             // after we drop the old databases, we create the new ones
             onCreate(db, connectionSource);
         } catch (SQLException e) {
@@ -70,22 +88,48 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
      * Returns the Database Access Object (DAO) for our SimpleData class. It will create it or just give the cached
      * value.
      */
-    public Dao<Login, Long> getDao() throws SQLException {
-        if (simpleDao == null) {
-            simpleDao = getDao(Login.class);
+    public Dao<Login, Long> getLoginDao() throws SQLException {
+        if (loginDao == null) {
+            loginDao = getDao(Login.class);
         }
-        return simpleDao;
+        return loginDao;
     }
 
     /**
      * Returns the RuntimeExceptionDao (Database Access Object) version of a Dao for our SimpleData class. It will
      * create it or just give the cached value. RuntimeExceptionDao only through RuntimeExceptions.
      */
-    public RuntimeExceptionDao<Login, Long> getSimpleDataDao() {
-        if (simpleRuntimeDao == null) {
-            simpleRuntimeDao = getRuntimeExceptionDao(Login.class);
+    public RuntimeExceptionDao<Login, Long> getLoginRuntimeDao() {
+        if (loginRuntimeDao == null) {
+            loginRuntimeDao = getRuntimeExceptionDao(Login.class);
         }
-        return simpleRuntimeDao;
+        return loginRuntimeDao;
+    }
+
+    public Dao<Ordem, Long> getOrdemDao() throws SQLException {
+        if (ordemDao == null) {
+            ordemDao = getDao(Ordem.class);
+        }
+        return ordemDao;
+    }
+    public RuntimeExceptionDao<Ordem, Long> getOrdemRuntimeDao() {
+        if (ordemRuntimeDao == null) {
+            ordemRuntimeDao = getRuntimeExceptionDao(Ordem.class);
+        }
+        return ordemRuntimeDao;
+    }
+
+    public Dao<Equipamento, Long> getEquipamentoDao() throws SQLException {
+        if (equipamentoDao == null) {
+            equipamentoDao = getDao(Equipamento.class);
+        }
+        return equipamentoDao;
+    }
+    public RuntimeExceptionDao<Equipamento, Long> getEquipamentoRuntimeDao() {
+        if (equipamentoRuntimeDao == null) {
+            equipamentoRuntimeDao = getRuntimeExceptionDao(Equipamento.class);
+        }
+        return equipamentoRuntimeDao;
     }
 
     /**
@@ -94,7 +138,10 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     @Override
     public void close() {
         super.close();
-        simpleDao = null;
-        simpleRuntimeDao = null;
+        loginDao = null;
+        loginRuntimeDao = null;
+        ordemDao = null;
+        ordemRuntimeDao = null;
+
     }
 }

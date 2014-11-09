@@ -19,68 +19,50 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smartech.maintenancelog.R;
+import com.smartech.maintenancelog.db.Ordem;
 import com.smartech.maintenancelog.dummy.DummyContent;
 
-public class MaintenanceRowAdapter extends ArrayAdapter<DummyContent.DummyItem> {
- 
-        private final Context context;
-        private final List<DummyContent.DummyItem> itemsArrayList;
- 
-        public MaintenanceRowAdapter(Context context, List<DummyContent.DummyItem> itemsArrayList) {
- 
-            super(context, R.layout.layout_maintenance_row, itemsArrayList);
- 
-            this.context = context;
-            this.itemsArrayList = itemsArrayList;
-        }
- 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
- 
-            // 1. Create inflater 
-            LayoutInflater inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
- 
-            // 2. Get rowView from inflater
-            View rowView = inflater.inflate(R.layout.layout_maintenance_row, parent, false);
+public class MaintenanceRowAdapter extends ArrayAdapter<Ordem> {
 
-            rowView.setPadding(0,0,0,0);
-            rowView.setBottom(0);
-            rowView.setPaddingRelative(0,0,0,0);
+    private final Context context;
+    private final List<Ordem> itemsArrayList;
 
-            TextView numeroDeOrdem = (TextView) rowView.findViewById(R.id.num_ordem);
-            TextView numeroDeEquipamento = (TextView) rowView.findViewById(R.id.enum_equipamento);
-            TextView designacaoEquipamento = (TextView) rowView.findViewById(R.id.designacao_equipamento);
-            TextView localizacao = (TextView) rowView.findViewById(R.id.localizacao_equipamento);
-            TextView periodicidade = (TextView) rowView.findViewById(R.id.perioridade_ordem);
+    public MaintenanceRowAdapter(Context context, List<Ordem> itemsArrayList) {
 
-            // 4. Set the text for textView
-            numeroDeOrdem.setText(itemsArrayList.get(position).numOrdem);
-            numeroDeEquipamento.setText(itemsArrayList.get(position).numEquipamento);
-            designacaoEquipamento.setText(itemsArrayList.get(position).designacaoEquipamento);
-            localizacao.setText(itemsArrayList.get(position).localizacao);
+        super(context, R.layout.layout_maintenance_row, itemsArrayList);
 
+        this.context = context;
+        this.itemsArrayList = itemsArrayList;
+    }
 
-            int anInt = randInt(1,4);
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
 
-            if(anInt==1) periodicidade.setText("D");
-            if(anInt==2) periodicidade.setText("S");
-            if(anInt==3) periodicidade.setText("M");
-            if(anInt==4) periodicidade.setText("A");
+        // 1. Create inflater
+        LayoutInflater inflater = (LayoutInflater) context
+            .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-            // 5. retrn rowView
-            return rowView;
-        }
-   private int randInt(int min, int max) {
+        // 2. Get rowView from inflater
+        View rowView = inflater.inflate(R.layout.layout_maintenance_row, parent, false);
 
-        // NOTE: Usually this should be a field rather than a method
-        // variable so that it is not re-seeded every call.
-        Random rand = new Random();
+        rowView.setPadding(0,0,0,0);
+        rowView.setBottom(0);
+        rowView.setPaddingRelative(0,0,0,0);
 
-        // nextInt is normally exclusive of the top value,
-        // so add 1 to make it inclusive
-        int randomNum = rand.nextInt((max - min) + 1) + min;
+        TextView numeroDeOrdem = (TextView) rowView.findViewById(R.id.num_ordem);
+        TextView numeroDeEquipamento = (TextView) rowView.findViewById(R.id.enum_equipamento);
+        TextView designacaoEquipamento = (TextView) rowView.findViewById(R.id.designacao_equipamento);
+        TextView localizacao = (TextView) rowView.findViewById(R.id.localizacao_equipamento);
+        TextView periodicidade = (TextView) rowView.findViewById(R.id.perioridade_ordem);
 
-        return randomNum;
+        // 4. Set the text for textView
+        numeroDeOrdem.setText(itemsArrayList.get(position).getOrderNumber());
+        numeroDeEquipamento.setText(itemsArrayList.get(position).getEquipament().getNumber());
+        designacaoEquipamento.setText(itemsArrayList.get(position).getEquipament().getName());
+        localizacao.setText(itemsArrayList.get(position).getEquipament().getLocalizacao());
+        periodicidade.setText(itemsArrayList.get(position).getPeriodicity());
+
+        // 5. retrn rowView
+        return rowView;
     }
 }

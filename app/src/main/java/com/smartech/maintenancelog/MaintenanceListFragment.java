@@ -8,10 +8,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 
+import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.smartech.maintenancelog.adapters.MaintenanceRowAdapter;
+import com.smartech.maintenancelog.db.DatabaseHelper;
+import com.smartech.maintenancelog.db.Ordem;
 import com.smartech.maintenancelog.dummy.DummyContent;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A list fragment representing a list of Maintenances. This fragment
@@ -42,6 +46,18 @@ public class MaintenanceListFragment extends ListFragment {
      * The current activated item position. Only used on tablets.
      */
     private int mActivatedPosition = ListView.INVALID_POSITION;
+
+    private DatabaseHelper databaseHelper = null;
+
+    protected DatabaseHelper getHelper() {
+        if (databaseHelper == null) {
+            databaseHelper =
+                    OpenHelperManager.getHelper(getActivity(), DatabaseHelper.class);
+        }
+        return databaseHelper;
+    }
+
+    
 
     /**
      * A callback interface that all activities containing this fragment must
@@ -76,9 +92,11 @@ public class MaintenanceListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+        List<Ordem> ordens = getHelper().getOrdemRuntimeDao().queryForEq("tecNumber", "10000004");
         // TODO: replace with a real list adapter.
-        dummyItemArrayAdapter = new MaintenanceRowAdapter(getActivity(),
-                DummyContent.ITEMS);
+        dummyItemArrayAdapter = new MaintenanceRowAdapter(getActivity(), ordens);
+
         setListAdapter(dummyItemArrayAdapter);
 
     }
@@ -152,5 +170,14 @@ public class MaintenanceListFragment extends ListFragment {
         }
 
         mActivatedPosition = position;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (databaseHelper != null) {
+            OpenHelperManager.releaseHelper();
+            databaseHelper = null;
+        }
     }
 }
