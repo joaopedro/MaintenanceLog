@@ -44,7 +44,7 @@ public class HistoryRowAdapter extends ArrayAdapter<HistoryEntry> {
             // 4. Set the text for textView
             numeroDeEquipamento.setText(numEquipamento);
             dataManutencao.setText(itemsArrayList.get(position).getDate());
-            tecnico.setText(itemsArrayList.get(position).getTecnico());
+            tecnico.setText(itemsArrayList.get(position).getTec());
 
             // 5. retrn rowView
             return rowView;

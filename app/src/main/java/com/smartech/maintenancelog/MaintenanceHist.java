@@ -12,7 +12,9 @@ import android.widget.TextView;
 
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.smartech.maintenancelog.adapters.HistoryRowAdapter;
+import com.smartech.maintenancelog.db.AuditDatabaseHelper;
 import com.smartech.maintenancelog.db.DatabaseHelper;
+import com.smartech.maintenancelog.db.Equipamento;
 import com.smartech.maintenancelog.db.HistoryEntry;
 import com.smartech.maintenancelog.db.Ordem;
 
@@ -21,6 +23,8 @@ import java.util.ArrayList;
 
 public class MaintenanceHist extends OrmLiteBaseActivity<DatabaseHelper> {
 
+    private AuditDatabaseHelper auditHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,9 +32,14 @@ public class MaintenanceHist extends OrmLiteBaseActivity<DatabaseHelper> {
         getActionBar().setDisplayHomeAsUpEnabled(true);
         if (savedInstanceState == null) {
             Bundle arguments = new Bundle();
-            arguments.putString(MaintenanceHistFragment.ITEM_ID,
-                    getIntent().getStringExtra(MaintenanceHistFragment.ITEM_ID));
-
+            if(getIntent().getStringExtra(MaintenanceHistFragment.ITEM_ID) !=null){
+                arguments.putString(MaintenanceHistFragment.ITEM_ID,
+                        getIntent().getStringExtra(MaintenanceHistFragment.ITEM_ID));
+            }
+            if(getIntent().getStringExtra(MaintenanceHistFragment.ITEM_EQUIPAMENTO) !=null) {
+                arguments.putString(MaintenanceHistFragment.ITEM_EQUIPAMENTO,
+                        getIntent().getStringExtra(MaintenanceHistFragment.ITEM_EQUIPAMENTO));
+            }
             MaintenanceHistFragment fragment = new MaintenanceHistFragment();
             fragment.setArguments(arguments);
 
@@ -40,7 +49,12 @@ public class MaintenanceHist extends OrmLiteBaseActivity<DatabaseHelper> {
         }
 
     }
-
+    private AuditDatabaseHelper getAuditHelper() {
+        if (auditHelper == null) {
+            auditHelper = new AuditDatabaseHelper(this);
+        }
+        return auditHelper;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -61,13 +75,16 @@ public class MaintenanceHist extends OrmLiteBaseActivity<DatabaseHelper> {
         return super.onOptionsItemSelected(item);
     }
 
+
     /**
      * A placeholder fragment containing a simple view.
      */
     public static class MaintenanceHistFragment extends Fragment {
 
         public static final String ITEM_ID = "item_id";
+        public static final String ITEM_EQUIPAMENTO = "num_equipamento";
         private Ordem mItem;
+        private Equipamento mEquipamento;
 
         public MaintenanceHistFragment() {
         }
@@ -80,8 +97,17 @@ public class MaintenanceHist extends OrmLiteBaseActivity<DatabaseHelper> {
                 // Load the dummy content specified by the fragment
                 // arguments. In a real-world scenario, use a Loader
                 // to load content from a content provider.
-                mItem =((MaintenanceHist)getActivity()).getHelper().getOrdemRuntimeDao().queryForId(getArguments().getLong(ITEM_ID));
+                String s_item_id = getArguments().getString(ITEM_ID);
+                mItem = ((MaintenanceHist) getActivity()).getHelper().getOrdemRuntimeDao().queryForId(Long.valueOf(s_item_id));
             }
+            if (getArguments().containsKey(ITEM_EQUIPAMENTO)) {
+                // Load the dummy content specified by the fragment
+                // arguments. In a real-world scenario, use a Loader
+                // to load content from a content provider.
+                String s_equipamento_id = getArguments().getString(ITEM_EQUIPAMENTO);
+                mEquipamento = ((MaintenanceHist) getActivity()).getAuditHelper().getEquipamentoRuntimeDao().queryForEq("number",s_equipamento_id).get(0);
+            }
+
         }
 
         @Override
@@ -90,15 +116,42 @@ public class MaintenanceHist extends OrmLiteBaseActivity<DatabaseHelper> {
             View rootView = inflater.inflate(R.layout.fragment_maintenance_hist, container, false);
 
             ListView listView = (ListView) rootView.findViewById(R.id.maintenance_history_list);
+            if(mItem!=null){
+                fillFromOrder(rootView, listView);
+            }else if(mEquipamento!=null){
+                fillFromEquipamento(rootView, listView);
+            }
+            return rootView;
+        }
 
-            HistoryRowAdapter adapter = new HistoryRowAdapter(getActivity(), new ArrayList<HistoryEntry>(mItem.getEquipament().getHistoryEntries()),
+        private void fillFromOrder(View rootView, ListView listView) {
+            HistoryRowAdapter adapter = new HistoryRowAdapter(getActivity(), new ArrayList<HistoryEntry>(mItem.getEquipament().getmHistoryEntries()),
                     mItem.getEquipament().getNumber());
 // Apply the adapter to the spinner
             listView.setAdapter(adapter);
 
             TextView nextMaintenance = (TextView) rootView.findViewById(R.id.next_maintenance);
-            nextMaintenance.setText(mItem.getEquipament().getNumber() + " | " + mItem.getNextMaintenanceDate() + " | " + mItem.getNextMaintenanceTec());
-            return rootView;
+            if(mItem.getEquipament().getNextHistoryEntry() != null){
+                nextMaintenance.setText(mItem.getEquipament().getNumber() + " | " + mItem.getEquipament().getNextHistoryEntry().getDate()
+                        + " | " + mItem.getEquipament().getNextHistoryEntry().getTec());
+            }else {
+                nextMaintenance.setText("N/A");
+            }
         }
+        private void fillFromEquipamento(View rootView, ListView listView) {
+            HistoryRowAdapter adapter = new HistoryRowAdapter(getActivity(), new ArrayList<HistoryEntry>(mEquipamento.getmHistoryEntries()),
+                    mEquipamento.getNumber());
+// Apply the adapter to the spinner
+            listView.setAdapter(adapter);
+
+            TextView nextMaintenance = (TextView) rootView.findViewById(R.id.next_maintenance);
+            if(mEquipamento.getNextHistoryEntry() != null){
+                nextMaintenance.setText(mEquipamento.getNumber() + " | " + mEquipamento.getNextHistoryEntry().getDate()
+                        + " | " + mEquipamento.getNextHistoryEntry().getTec());
+            }else {
+                nextMaintenance.setText("N/A");
+            }
+        }
+
     }
 }

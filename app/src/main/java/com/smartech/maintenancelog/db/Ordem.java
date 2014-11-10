@@ -24,8 +24,6 @@ public class Ordem {
     private Collection<Part> parts;
     @ForeignCollectionField(eager = false) private ForeignCollection<Activity> mActivities;
     @ForeignCollectionField(eager = false) private ForeignCollection<Part> mParts;
-    @DatabaseField private String nextMaintenanceTec;
-    @DatabaseField private String nextMaintenanceDate;
 
     public Long getId() {
         return id;
@@ -98,24 +96,6 @@ public class Ordem {
 
     public void setParts(Collection<Part> parts) {
         this.parts = parts;
-    }
-
-
-    public String getNextMaintenanceTec() {
-        return nextMaintenanceTec;
-    }
-
-    public void setNextMaintenanceTec(String nextMaintenanceTec) {
-        this.nextMaintenanceTec = nextMaintenanceTec;
-    }
-
-
-    public String getNextMaintenanceDate() {
-        return nextMaintenanceDate;
-    }
-
-    public void setNextMaintenanceDate(String nextMaintenanceDate) {
-        this.nextMaintenanceDate = nextMaintenanceDate;
     }
 
     public ForeignCollection<Activity> getmActivities() {

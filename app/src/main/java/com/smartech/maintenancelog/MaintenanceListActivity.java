@@ -16,6 +16,7 @@ import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.smartech.maintenancelog.adapters.MaintenanceRowAdapter;
 import com.smartech.maintenancelog.db.Activity;
 import com.smartech.maintenancelog.db.DatabaseHelper;
+import com.smartech.maintenancelog.db.HistoryEntry;
 import com.smartech.maintenancelog.db.Login;
 import com.smartech.maintenancelog.db.Ordem;
 import com.smartech.maintenancelog.db.Part;
@@ -210,10 +211,14 @@ implements MaintenanceListFragment.Callbacks {
 
             for (Ordem ordem : ordens) {
                 if(!getHelper().getOrdemRuntimeDao().idExists(ordem.getId())){
+                    if(ordem.getEquipament().getNextHistoryEntry()!=null){
+                        getHelper().getNextOrdemRuntimeDao().create(ordem.getEquipament().getNextHistoryEntry());
+                    }
                     getHelper().getOrdemRuntimeDao().create(ordem);
                     if(!getHelper().getEquipamentoRuntimeDao().idExists(ordem.getEquipament().getId())) {
                         getHelper().getEquipamentoRuntimeDao().create(ordem.getEquipament());
                     }
+
                     if(ordem.getTransientActivities()!=null){
                         for (Activity activity : ordem.getTransientActivities()) {
                             if(!getHelper().getActivityRuntimeDao().idExists(activity.getId())) {
@@ -232,6 +237,14 @@ implements MaintenanceListFragment.Callbacks {
 
                         }
                     }
+                    if(ordem.getEquipament().getTransientHistory()!=null){
+                        getHelper().getHistoryRuntimeExceptionDao().delete(ordem.getEquipament().getmHistoryEntries());
+                        for (HistoryEntry historyEntry : ordem.getEquipament().getTransientHistory()) {
+                            historyEntry.setEquipamento(ordem.getEquipament());
+                            getHelper().getHistoryRuntimeExceptionDao().create(historyEntry);
+                        }
+                    }
+
                 }
             }
         }

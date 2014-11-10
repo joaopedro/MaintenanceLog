@@ -14,7 +14,8 @@
             android:textAppearance="?android:attr/textAppearanceListItemSmall"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:layout_weight="0.55"/>
+            android:layout_weight="0.55"
+            android:gravity="center" />
         <View
             android:layout_width="1dip"
             android:layout_height="fill_parent"
@@ -25,7 +26,8 @@
             android:textAppearance="?android:attr/textAppearanceListItemSmall"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:layout_weight="0.65"/>
+            android:layout_weight="0.65"
+            android:gravity="center" />
         <View
             android:layout_width="1dip"
             android:layout_height="fill_parent"
@@ -36,7 +38,8 @@
             android:textAppearance="?android:attr/textAppearanceListItemSmall"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:layout_weight="0.95"/>
+            android:layout_weight="0.95"
+            android:gravity="center" />
 
     </LinearLayout>
 

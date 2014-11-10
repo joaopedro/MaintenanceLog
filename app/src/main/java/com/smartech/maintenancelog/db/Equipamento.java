@@ -1,5 +1,6 @@
 package com.smartech.maintenancelog.db;
 
+import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 
@@ -14,6 +15,8 @@ public class Equipamento {
     @DatabaseField private String name;
     @DatabaseField private String localizacao;
     @ForeignCollectionField private Collection<HistoryEntry> historyEntries;
+    @ForeignCollectionField(eager = false) private ForeignCollection<HistoryEntry> mHistoryEntries;
+    @DatabaseField(foreign = true, foreignAutoRefresh=true) private NextOrdem nextHistoryEntry;
 
     public Long getId() {
         return id;
@@ -47,11 +50,25 @@ public class Equipamento {
         this.localizacao = localizacao;
     }
 
-    public Collection<HistoryEntry> getHistoryEntries() {
-        return historyEntries;
-    }
-
     public void setHistoryEntries(Collection<HistoryEntry> historyEntries) {
         this.historyEntries = historyEntries;
+    }
+    public Collection<HistoryEntry> getTransientHistory() {
+        return this.historyEntries;
+    }
+    public ForeignCollection<HistoryEntry> getmHistoryEntries() {
+        return mHistoryEntries;
+    }
+
+    public void setmHistoryEntries(ForeignCollection<HistoryEntry> mHistoryEntries) {
+        this.mHistoryEntries = mHistoryEntries;
+    }
+
+    public NextOrdem getNextHistoryEntry() {
+        return nextHistoryEntry;
+    }
+
+    public void setNextHistoryEntry(NextOrdem nextHistoryEntry) {
+        this.nextHistoryEntry = nextHistoryEntry;
     }
 }
