@@ -8,6 +8,8 @@ import com.j256.ormlite.field.DatabaseField;
 public class HistoryEntry {
     @DatabaseField(id = true) private Long id;
     @DatabaseField(foreign = true) private Equipamento equipamento;
+    @DatabaseField private String date;
+    @DatabaseField private String tecnico;
 
     public Long getId() {
         return id;
@@ -23,5 +25,21 @@ public class HistoryEntry {
 
     public void setEquipamento(Equipamento equipamento) {
         this.equipamento = equipamento;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getTecnico() {
+        return tecnico;
+    }
+
+    public void setTecnico(String tecnico) {
+        this.tecnico = tecnico;
     }
 }

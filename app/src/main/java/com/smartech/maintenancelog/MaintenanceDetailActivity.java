@@ -8,6 +8,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
+import com.smartech.maintenancelog.db.DatabaseHelper;
+
 
 /**
  * An activity representing a single Maintenance detail screen. This
@@ -18,7 +21,7 @@ import android.widget.Button;
  * This activity is mostly just a 'shell' activity containing nothing
  * more than a {@link MaintenanceDetailFragment}.
  */
-public class MaintenanceDetailActivity extends Activity
+public class MaintenanceDetailActivity extends OrmLiteBaseActivity<DatabaseHelper>
     implements View.OnClickListener{
 
     private boolean mTwoPane;
@@ -53,13 +56,18 @@ public class MaintenanceDetailActivity extends Activity
             // using a fragment transaction.
             itemId = getIntent().getStringExtra(MaintenanceDetailFragment.ARG_ITEM_ID);
             mTwoPane = getIntent().getBooleanExtra(MaintenanceDetailFragment.TWO_PANE, false);
+
+            Bundle arguments = new Bundle();
+
             if(getIntent().getStringExtra(MaintenanceDetailFragment.ARG_SCANNED_CODE)!=null){
                 String scannedCode = getIntent().getStringExtra(MaintenanceDetailFragment.ARG_SCANNED_CODE);
                 itemId = scannedCode.substring(scannedCode.indexOf("Número SAP: ")+12, scannedCode.indexOf("\r\nEquipamento"));
+                arguments.putString(MaintenanceDetailFragment.ARG_SCANNED_CODE, scannedCode);
+            }else{
+                arguments.putString(MaintenanceDetailFragment.ARG_ITEM_ID, itemId);
+
             }
 
-            Bundle arguments = new Bundle();
-            arguments.putString(MaintenanceDetailFragment.ARG_ITEM_ID, itemId);
 
             MaintenanceDetailFragment fragment = new MaintenanceDetailFragment();
             fragment.setArguments(arguments);

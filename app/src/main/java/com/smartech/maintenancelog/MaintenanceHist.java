@@ -1,30 +1,25 @@
 package com.smartech.maintenancelog;
 
-import android.app.Activity;
-import android.app.ActionBar;
 import android.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.smartech.maintenancelog.adapters.HistoryRowAdapter;
-import com.smartech.maintenancelog.dummy.DummyContent;
+import com.smartech.maintenancelog.db.DatabaseHelper;
+import com.smartech.maintenancelog.db.HistoryEntry;
+import com.smartech.maintenancelog.db.Ordem;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
-public class MaintenanceHist extends Activity {
+public class MaintenanceHist extends OrmLiteBaseActivity<DatabaseHelper> {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +67,7 @@ public class MaintenanceHist extends Activity {
     public static class MaintenanceHistFragment extends Fragment {
 
         public static final String ITEM_ID = "item_id";
-        private DummyContent.DummyItem mItem;
+        private Ordem mItem;
 
         public MaintenanceHistFragment() {
         }
@@ -85,7 +80,7 @@ public class MaintenanceHist extends Activity {
                 // Load the dummy content specified by the fragment
                 // arguments. In a real-world scenario, use a Loader
                 // to load content from a content provider.
-                mItem = DummyContent.ITEM_MAP.get(getArguments().getString(ITEM_ID));
+                mItem =((MaintenanceHist)getActivity()).getHelper().getOrdemRuntimeDao().queryForId(getArguments().getLong(ITEM_ID));
             }
         }
 
@@ -96,12 +91,13 @@ public class MaintenanceHist extends Activity {
 
             ListView listView = (ListView) rootView.findViewById(R.id.maintenance_history_list);
 
-            HistoryRowAdapter adapter = new HistoryRowAdapter(getActivity(), mItem.history, mItem.numEquipamento);
+            HistoryRowAdapter adapter = new HistoryRowAdapter(getActivity(), new ArrayList<HistoryEntry>(mItem.getEquipament().getHistoryEntries()),
+                    mItem.getEquipament().getNumber());
 // Apply the adapter to the spinner
             listView.setAdapter(adapter);
 
             TextView nextMaintenance = (TextView) rootView.findViewById(R.id.next_maintenance);
-            nextMaintenance.setText(mItem.numEquipamento + " | " + mItem.nextMaintenance.date + " | " + mItem.nextMaintenance.tec);
+            nextMaintenance.setText(mItem.getEquipament().getNumber() + " | " + mItem.getNextMaintenanceDate() + " | " + mItem.getNextMaintenanceTec());
             return rootView;
         }
     }

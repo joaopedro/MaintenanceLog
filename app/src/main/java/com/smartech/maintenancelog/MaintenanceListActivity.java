@@ -1,30 +1,24 @@
 package com.smartech.maintenancelog;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.app.Activity;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.smartech.maintenancelog.adapters.MaintenanceRowAdapter;
+import com.smartech.maintenancelog.db.Activity;
 import com.smartech.maintenancelog.db.DatabaseHelper;
 import com.smartech.maintenancelog.db.Login;
 import com.smartech.maintenancelog.db.Ordem;
-import com.smartech.maintenancelog.dummy.DummyContent;
+import com.smartech.maintenancelog.db.Part;
 import com.smartech.maintenancelog.integration.zxing.IntentIntegrator;
 import com.smartech.maintenancelog.integration.zxing.IntentResult;
 
@@ -37,7 +31,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -102,7 +95,7 @@ implements MaintenanceListFragment.Callbacks {
                 progress.setIndeterminate(true);
                 progress.show();
 
-                new SyncOrdemTask().execute((Void) null);
+                new SyncOrdemTask(((MaintenanceLogApp)getApplicationContext()).getLoggedUser()).execute((Void) null);
             }
         });
 
@@ -131,13 +124,13 @@ implements MaintenanceListFragment.Callbacks {
      * indicating that the item with the given ID was selected.
      */
     @Override
-    public void onItemSelected(String id) {
+    public void onItemSelected(Ordem ordem) {
         if (mTwoPane) {
             // In two-pane mode, show the detail view in this activity by
             // adding or replacing the detail fragment using a
             // fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putString(MaintenanceDetailFragment.ARG_ITEM_ID, id);
+            arguments.putLong(MaintenanceDetailFragment.ARG_ITEM_ID, ordem.getId());
             arguments.putBoolean(MaintenanceDetailFragment.TWO_PANE, mTwoPane);
             MaintenanceDetailFragment fragment = new MaintenanceDetailFragment();
             fragment.setArguments(arguments);
@@ -149,7 +142,7 @@ implements MaintenanceListFragment.Callbacks {
             // In single-pane mode, simply start the detail activity
             // for the selected item ID.
             Intent detailIntent = new Intent(this, MaintenanceDetailActivity.class);
-            detailIntent.putExtra(MaintenanceDetailFragment.ARG_ITEM_ID, id);
+            detailIntent.putExtra(MaintenanceDetailFragment.ARG_ITEM_ID, ""+ordem.getId());
             detailIntent.putExtra(MaintenanceDetailFragment.TWO_PANE, mTwoPane);
             startActivity(detailIntent);
         }
@@ -157,6 +150,11 @@ implements MaintenanceListFragment.Callbacks {
 
     public class SyncOrdemTask extends AsyncTask<Void, Void, String> {
 
+        private final Login login;
+
+        public SyncOrdemTask(Login login) {
+            this.login = login;
+        }
 
         @Override
         protected String doInBackground(Void... params) {
@@ -175,7 +173,7 @@ implements MaintenanceListFragment.Callbacks {
                     MaintenanceRowAdapter maintenanceRowAdapter = ((MaintenanceListFragment) getFragmentManager()
                             .findFragmentById(R.id.maintenance_list)).dummyItemArrayAdapter;
                     maintenanceRowAdapter.clear();
-                    maintenanceRowAdapter.addAll(getHelper().getOrdemRuntimeDao().queryForEq("tecNumber", "10000004"));
+                    maintenanceRowAdapter.addAll(getHelper().getOrdemRuntimeDao().queryForEq("tecNumber", login.getTecNumber()));
                 }
             });
 
@@ -190,7 +188,7 @@ implements MaintenanceListFragment.Callbacks {
             HttpClient httpclient = new DefaultHttpClient();
             HttpResponse response;
             String responseString = null;
-            response = httpclient.execute(new HttpGet("http://176.111.107.200:8080/ordem/tecnico/10000004"));
+            response = httpclient.execute(new HttpGet("http://176.111.107.200:8080/ordem/tecnico/"+login.getTecNumber()));
             StatusLine statusLine = response.getStatusLine();
             if(statusLine.getStatusCode() == HttpStatus.SC_OK){
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -213,7 +211,27 @@ implements MaintenanceListFragment.Callbacks {
             for (Ordem ordem : ordens) {
                 if(!getHelper().getOrdemRuntimeDao().idExists(ordem.getId())){
                     getHelper().getOrdemRuntimeDao().create(ordem);
-                    getHelper().getEquipamentoRuntimeDao().create(ordem.getEquipament());
+                    if(!getHelper().getEquipamentoRuntimeDao().idExists(ordem.getEquipament().getId())) {
+                        getHelper().getEquipamentoRuntimeDao().create(ordem.getEquipament());
+                    }
+                    if(ordem.getTransientActivities()!=null){
+                        for (Activity activity : ordem.getTransientActivities()) {
+                            if(!getHelper().getActivityRuntimeDao().idExists(activity.getId())) {
+                                activity.setOrdem(ordem);
+                                getHelper().getActivityRuntimeDao().create(activity);
+                            }
+
+                        }
+                    }
+                    if(ordem.getTransientParts()!=null){
+                        for (Part part : ordem.getTransientParts()) {
+                            if(!getHelper().getPartRuntimeDao().idExists(part.getId())) {
+                                part.setOrdem(ordem);
+                                getHelper().getPartRuntimeDao().create(part);
+                            }
+
+                        }
+                    }
                 }
             }
         }

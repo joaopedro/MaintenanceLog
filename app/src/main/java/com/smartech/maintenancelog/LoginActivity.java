@@ -239,7 +239,7 @@ public class LoginActivity extends OrmLiteBaseActivity<DatabaseHelper> implement
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, String> {
+    public class UserLoginTask extends AsyncTask<Void, Void, Login> {
 
         private final String mEmail;
         private final String mPassword;
@@ -250,7 +250,7 @@ public class LoginActivity extends OrmLiteBaseActivity<DatabaseHelper> implement
         }
 
         @Override
-        protected String doInBackground(Void... params) {
+        protected Login doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
             try {
@@ -264,29 +264,31 @@ public class LoginActivity extends OrmLiteBaseActivity<DatabaseHelper> implement
             for (Login login : logins) {
                 if (login.getUser().equals(mEmail) && login.getPassword().equals(mPassword)) {
                     // Account exists, return true if the password matches.
-                    return login.getPerfil();
+                    return login;
                 }
             }
 
             // TODO: register the new account here.
-            return "fail";
+            return null;
         }
 
         @Override
-        protected void onPostExecute(final String perfil) {
-            super.onPostExecute(perfil);
+        protected void onPostExecute(final Login login) {
+            super.onPostExecute(login);
 
             mAuthTask = null;
             showProgress(false);
 
-            if (!perfil.equals("fail")) {
-                if(perfil.equals("tec")){
+            if (login!=null) {
+                if(login.getPerfil().equals("tec")){
+                    ((MaintenanceLogApp)getApplicationContext()).setLoggedUser(login);
                     Intent intent = new Intent(LoginActivity.this, MaintenanceListActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     getApplicationContext().startActivity(intent);
 
                     finish();
-                }else if(perfil.equals("aud")){
+                }else if(login.getPerfil().equals("aud")){
+                    ((MaintenanceLogApp)getApplicationContext()).setLoggedUser(login);
                     Intent intent = new Intent(LoginActivity.this, AuditMainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     getApplicationContext().startActivity(intent);

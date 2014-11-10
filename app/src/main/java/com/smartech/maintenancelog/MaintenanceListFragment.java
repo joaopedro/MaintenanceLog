@@ -1,20 +1,15 @@
 package com.smartech.maintenancelog;
 
 import android.app.Activity;
-import android.os.Bundle;
 import android.app.ListFragment;
+import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-
-import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.smartech.maintenancelog.adapters.MaintenanceRowAdapter;
 import com.smartech.maintenancelog.db.DatabaseHelper;
 import com.smartech.maintenancelog.db.Ordem;
-import com.smartech.maintenancelog.dummy.DummyContent;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,14 +42,8 @@ public class MaintenanceListFragment extends ListFragment {
      */
     private int mActivatedPosition = ListView.INVALID_POSITION;
 
-    private DatabaseHelper databaseHelper = null;
-
     protected DatabaseHelper getHelper() {
-        if (databaseHelper == null) {
-            databaseHelper =
-                    OpenHelperManager.getHelper(getActivity(), DatabaseHelper.class);
-        }
-        return databaseHelper;
+        return ((MaintenanceListActivity)getActivity()).getHelper();
     }
 
     
@@ -68,7 +57,7 @@ public class MaintenanceListFragment extends ListFragment {
         /**
          * Callback for when an item has been selected.
          */
-        public void onItemSelected(String id);
+        public void onItemSelected(Ordem id);
     }
 
     /**
@@ -77,7 +66,7 @@ public class MaintenanceListFragment extends ListFragment {
      */
     private static Callbacks sDummyCallbacks = new Callbacks() {
         @Override
-        public void onItemSelected(String id) {
+        public void onItemSelected(Ordem id) {
         }
     };
 
@@ -93,7 +82,7 @@ public class MaintenanceListFragment extends ListFragment {
         super.onCreate(savedInstanceState);
 
 
-        List<Ordem> ordens = getHelper().getOrdemRuntimeDao().queryForEq("tecNumber", "10000004");
+        List<Ordem> ordens = getHelper().getOrdemRuntimeDao().queryForEq("tecNumber", ((MaintenanceLogApp)getActivity().getApplicationContext()).getLoggedUser().getTecNumber());
         // TODO: replace with a real list adapter.
         dummyItemArrayAdapter = new MaintenanceRowAdapter(getActivity(), ordens);
 
@@ -138,7 +127,9 @@ public class MaintenanceListFragment extends ListFragment {
 
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.
-        mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
+        MaintenanceRowAdapter maintenanceRowAdapter = ((MaintenanceListFragment) getFragmentManager()
+                .findFragmentById(R.id.maintenance_list)).dummyItemArrayAdapter;
+        mCallbacks.onItemSelected(maintenanceRowAdapter.getItem(position));
     }
 
     @Override
@@ -175,9 +166,5 @@ public class MaintenanceListFragment extends ListFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (databaseHelper != null) {
-            OpenHelperManager.releaseHelper();
-            databaseHelper = null;
-        }
     }
 }

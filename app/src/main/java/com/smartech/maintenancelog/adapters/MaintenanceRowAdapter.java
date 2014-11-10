@@ -1,26 +1,17 @@
 package com.smartech.maintenancelog.adapters;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smartech.maintenancelog.R;
 import com.smartech.maintenancelog.db.Ordem;
-import com.smartech.maintenancelog.dummy.DummyContent;
+
+import java.util.List;
 
 public class MaintenanceRowAdapter extends ArrayAdapter<Ordem> {
 
@@ -54,6 +45,7 @@ public class MaintenanceRowAdapter extends ArrayAdapter<Ordem> {
         TextView designacaoEquipamento = (TextView) rowView.findViewById(R.id.designacao_equipamento);
         TextView localizacao = (TextView) rowView.findViewById(R.id.localizacao_equipamento);
         TextView periodicidade = (TextView) rowView.findViewById(R.id.perioridade_ordem);
+        TextView tipo = (TextView) rowView.findViewById(R.id.tipo_ordem);
 
         // 4. Set the text for textView
         numeroDeOrdem.setText(itemsArrayList.get(position).getOrderNumber());
@@ -61,7 +53,11 @@ public class MaintenanceRowAdapter extends ArrayAdapter<Ordem> {
         designacaoEquipamento.setText(itemsArrayList.get(position).getEquipament().getName());
         localizacao.setText(itemsArrayList.get(position).getEquipament().getLocalizacao());
         periodicidade.setText(itemsArrayList.get(position).getPeriodicity());
+        tipo.setText(itemsArrayList.get(position).getType());
 
+        if(tipo.getText().equals("PM01")){
+            rowView.setBackgroundColor(Color.RED);
+        }
         // 5. retrn rowView
         return rowView;
     }

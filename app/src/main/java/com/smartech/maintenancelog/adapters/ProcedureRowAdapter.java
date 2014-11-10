@@ -1,6 +1,5 @@
 package com.smartech.maintenancelog.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.smartech.maintenancelog.R;
-import com.smartech.maintenancelog.dummy.DummyContent;
+import com.smartech.maintenancelog.db.Activity;
 
 import java.util.List;
 
@@ -19,12 +18,12 @@ import java.util.List;
  * Created by jpedro on 21-09-2014.
  */
 
-public class ProcedureRowAdapter extends ArrayAdapter<DummyContent.Procedure> {
+public class ProcedureRowAdapter extends ArrayAdapter<Activity> {
 
     private final Context context;
-    private final List<DummyContent.Procedure> itemsArrayList;
+    private final List<Activity> itemsArrayList;
 
-    public ProcedureRowAdapter(Context context, List<DummyContent.Procedure> itemsArrayList) {
+    public ProcedureRowAdapter(Context context, List<Activity> itemsArrayList) {
 
         super(context, R.layout.layout_procedure_row, itemsArrayList);
 
@@ -51,19 +50,19 @@ public class ProcedureRowAdapter extends ArrayAdapter<DummyContent.Procedure> {
 
 
         // 4. Set the text for textView
-        procedureText.setText(itemsArrayList.get(position).text);
+        procedureText.setText(itemsArrayList.get(position).getDiscription());
 
-        if(itemsArrayList.get(position).type.equals("INFO")){
+        if(itemsArrayList.get(position).type.equals("t")){
             procedureCheck.setVisibility(View.GONE);
             procedureValue.setVisibility(View.GONE);
         }
 
-        if(itemsArrayList.get(position).type.equals("CHECK")){
+        if(itemsArrayList.get(position).type.equals("c")){
             procedureCheck.setVisibility(View.VISIBLE);
             procedureValue.setVisibility(View.GONE);
         }
 
-        if(itemsArrayList.get(position).type.equals("INPUT")){
+        if(itemsArrayList.get(position).type.equals("i")){
             procedureCheck.setVisibility(View.VISIBLE);
             procedureValue.setVisibility(View.VISIBLE);
         }

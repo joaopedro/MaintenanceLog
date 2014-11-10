@@ -28,5 +28,6 @@
     <string name="title_activity_maintenance_hist">Histórico de Manutenções</string>
     <string name="title_activity_maintenance_parts">MaintenanceParts</string>
     <string name="finalize">Finalizar</string>
+    <string name="tipo_ordem">Tipo</string>
 
 </resources>

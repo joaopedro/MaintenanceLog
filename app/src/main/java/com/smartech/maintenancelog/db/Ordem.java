@@ -1,5 +1,6 @@
 package com.smartech.maintenancelog.db;
 
+import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 
@@ -19,8 +20,13 @@ public class Ordem {
     @DatabaseField private String tecNumber;
     @DatabaseField private String obs;
     @DatabaseField(foreign = true, foreignAutoRefresh=true, canBeNull = false) private Equipamento equipament;
-    @ForeignCollectionField private Collection<Activity> activities;
-    @ForeignCollectionField private Collection<Part> parts;
+    private Collection<Activity> activities;
+    private Collection<Part> parts;
+    @ForeignCollectionField(eager = false) private ForeignCollection<Activity> mActivities;
+    @ForeignCollectionField(eager = false) private ForeignCollection<Part> mParts;
+    @DatabaseField private String nextMaintenanceTec;
+    @DatabaseField private String nextMaintenanceDate;
+
     public Long getId() {
         return id;
     }
@@ -85,19 +91,54 @@ public class Ordem {
         this.equipament = equipament;
     }
 
-    public Collection<Activity> getActivities() {
-        return activities;
-    }
-
     public void setActivities(Collection<Activity> activities) {
         this.activities = activities;
     }
 
-    public Collection<Part> getParts() {
-        return parts;
-    }
 
     public void setParts(Collection<Part> parts) {
         this.parts = parts;
+    }
+
+
+    public String getNextMaintenanceTec() {
+        return nextMaintenanceTec;
+    }
+
+    public void setNextMaintenanceTec(String nextMaintenanceTec) {
+        this.nextMaintenanceTec = nextMaintenanceTec;
+    }
+
+
+    public String getNextMaintenanceDate() {
+        return nextMaintenanceDate;
+    }
+
+    public void setNextMaintenanceDate(String nextMaintenanceDate) {
+        this.nextMaintenanceDate = nextMaintenanceDate;
+    }
+
+    public ForeignCollection<Activity> getmActivities() {
+        return mActivities;
+    }
+
+    public void setmActivities(ForeignCollection<Activity> mActivities) {
+        this.mActivities = mActivities;
+    }
+
+    public ForeignCollection<Part> getmParts() {
+        return mParts;
+    }
+
+    public void setmParts(ForeignCollection<Part> mParts) {
+        this.mParts = mParts;
+    }
+
+    public Collection<Activity> getTransientActivities() {
+        return activities;
+    }
+
+    public Collection<Part> getTransientParts() {
+        return parts;
     }
 }

@@ -57,6 +57,14 @@
                 android:layout_weight="0.2"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"/>
+            <TextView android:text="@string/tipo_ordem"
+                android:background="@drawable/cell_shape_head"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.4"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"/>
         </TableRow>
         <TableRow android:layout_height="wrap_content"
             android:layout_width="fill_parent"

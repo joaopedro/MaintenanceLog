@@ -1,18 +1,20 @@
 package com.smartech.maintenancelog;
 
-import android.content.Intent;
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
-
 
 import com.smartech.maintenancelog.adapters.ProcedureRowAdapter;
-import com.smartech.maintenancelog.dummy.DummyContent;
+import com.smartech.maintenancelog.db.Activity;
+import com.smartech.maintenancelog.db.Equipamento;
+import com.smartech.maintenancelog.db.Ordem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A fragment representing a single Maintenance detail screen.
@@ -32,7 +34,7 @@ public class MaintenanceDetailFragment extends Fragment {
     /**
      * The dummy content this fragment is presenting.
      */
-    private DummyContent.DummyItem mItem;
+    private Ordem mItem;
 
     private String scannedCode;
     /**
@@ -50,7 +52,8 @@ public class MaintenanceDetailFragment extends Fragment {
             // Load the dummy content specified by the fragment
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
-            mItem = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
+            String ordemId = getArguments().getString(ARG_ITEM_ID);
+            mItem =  ((MaintenanceDetailActivity)getActivity()).getHelper().getOrdemRuntimeDao().queryForId(Long.valueOf(ordemId));
         }
         if (getArguments().containsKey(ARG_SCANNED_CODE)) {
             // Load the dummy content specified by the fragment
@@ -58,7 +61,10 @@ public class MaintenanceDetailFragment extends Fragment {
             // to load content from a content provider.
             scannedCode = getArguments().getString(ARG_SCANNED_CODE);
             if(scannedCode != null){
-                mItem = DummyContent.ITEM_MAP.get(scannedCode.substring(scannedCode.indexOf("Número SAP: ")+12, scannedCode.indexOf("\r\nEquipamento")));
+                String numeroEquipamento = scannedCode.substring(scannedCode.indexOf("Número SAP: ") + 12, scannedCode.indexOf("\r\nEquipamento"));
+                List<Equipamento> equipamentosByNumber = ((MaintenanceDetailActivity) getActivity()).getHelper().getEquipamentoRuntimeDao().queryForEq("number", numeroEquipamento);
+                List<Ordem> ordensByFirstEquipment = ((MaintenanceDetailActivity) getActivity()).getHelper().getOrdemRuntimeDao().queryForEq("equipament_id", equipamentosByNumber.get(0).getId());
+                mItem = ordensByFirstEquipment.get(0);
             }
         }
 
@@ -76,12 +82,12 @@ public class MaintenanceDetailFragment extends Fragment {
 //            ((TextView) rootView.findViewById(R.id.maintenance_detail)).setText(mItem.numOrdem);
 //        }
 
-        getActivity().getActionBar().setTitle("Equipamento "+mItem.numEquipamento +" Ordem "+mItem.numOrdem);
+        getActivity().getActionBar().setTitle("Equipamento "+mItem.getEquipament().getNumber() +" Ordem "+mItem.getOrderNumber());
 
         ListView listProcedimentos = (ListView) rootView.findViewById(R.id.list_procedimentos);
 
         ProcedureRowAdapter procedureRowAdapter = new ProcedureRowAdapter(getActivity(),
-                mItem.getProcedures());
+                new ArrayList<Activity>(mItem.getmActivities()));
 
         listProcedimentos.setAdapter(procedureRowAdapter);
 

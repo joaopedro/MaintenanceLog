@@ -8,18 +8,17 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.smartech.maintenancelog.R;
-import com.smartech.maintenancelog.dummy.DummyContent;
+import com.smartech.maintenancelog.db.HistoryEntry;
 
 import java.util.List;
-import java.util.Random;
 
-public class HistoryRowAdapter extends ArrayAdapter<DummyContent.Maintenance> {
+public class HistoryRowAdapter extends ArrayAdapter<HistoryEntry> {
 
         private final Context context;
         private final String numEquipamento;
-        private final List<DummyContent.Maintenance> itemsArrayList;
+        private final List<HistoryEntry> itemsArrayList;
 
-        public HistoryRowAdapter(Context context, List<DummyContent.Maintenance> itemsArrayList, String numEquipamento) {
+        public HistoryRowAdapter(Context context, List<HistoryEntry> itemsArrayList, String numEquipamento) {
  
             super(context, R.layout.layout_history_row, itemsArrayList);
  
@@ -44,8 +43,8 @@ public class HistoryRowAdapter extends ArrayAdapter<DummyContent.Maintenance> {
 
             // 4. Set the text for textView
             numeroDeEquipamento.setText(numEquipamento);
-            dataManutencao.setText(itemsArrayList.get(position).date);
-            tecnico.setText(itemsArrayList.get(position).tec);
+            dataManutencao.setText(itemsArrayList.get(position).getDate());
+            tecnico.setText(itemsArrayList.get(position).getTecnico());
 
             // 5. retrn rowView
             return rowView;

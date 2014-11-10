@@ -35,6 +35,10 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     // the DAO object we use to access the Equipamento table
     private Dao<Equipamento, Long> equipamentoDao = null;
     private RuntimeExceptionDao<Equipamento, Long> equipamentoRuntimeDao = null;
+    private RuntimeExceptionDao<Activity, Long> activityRuntimeDao = null;
+    private Dao<Activity, Long> activityDao = null;
+    private RuntimeExceptionDao<Part, Long> partRuntimeDao = null;
+    private Dao<Part, Long> partDao = null;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -144,4 +148,37 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         ordemRuntimeDao = null;
 
     }
+
+    public RuntimeExceptionDao<Activity, Long> getActivityRuntimeDao() {
+        if (activityRuntimeDao == null) {
+            activityRuntimeDao = getRuntimeExceptionDao(Activity.class);
+        }
+
+        return activityRuntimeDao;
+    }
+
+    public Dao<Activity, Long> getActivityDao() throws SQLException {
+        if (activityDao == null) {
+            activityDao = getDao(Activity.class);
+        }
+
+        return activityDao;
+    }
+
+    public RuntimeExceptionDao<Part, Long> getPartRuntimeDao() {
+        if (partRuntimeDao== null) {
+            partRuntimeDao= getRuntimeExceptionDao(Part.class);
+        }
+
+        return partRuntimeDao;
+    }
+
+    public Dao<Part, Long> getDao() throws SQLException {
+        if (partDao== null) {
+            partDao= getDao(Part.class);
+        }
+
+        return partDao;
+    }
+
 }

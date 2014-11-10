@@ -7,11 +7,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.smartech.maintenancelog.dummy.DummyContent;
 import com.smartech.maintenancelog.integration.zxing.IntentIntegrator;
 import com.smartech.maintenancelog.integration.zxing.IntentResult;
 

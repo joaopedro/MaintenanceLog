@@ -5,12 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.smartech.maintenancelog.R;
-import com.smartech.maintenancelog.dummy.DummyContent;
+import com.smartech.maintenancelog.db.Part;
 
 import java.util.List;
 
@@ -18,12 +16,12 @@ import java.util.List;
  * Created by jpedro on 21-09-2014.
  */
 
-public class PartRowAdapter extends ArrayAdapter<DummyContent.Part> {
+public class PartRowAdapter extends ArrayAdapter<Part> {
 
     private final Context context;
-    private final List<DummyContent.Part> itemsArrayList;
+    private final List<Part> itemsArrayList;
 
-    public PartRowAdapter(Context context, List<DummyContent.Part> itemsArrayList) {
+    public PartRowAdapter(Context context, List<Part> itemsArrayList) {
 
         super(context, R.layout.layout_part_row, itemsArrayList);
 
@@ -48,7 +46,7 @@ public class PartRowAdapter extends ArrayAdapter<DummyContent.Part> {
 
 
         // 4. Set the text for textView
-        partNameText.setText(itemsArrayList.get(position).name);
+        partNameText.setText(itemsArrayList.get(position).getDiscription());
 
         // 5. retrn rowView
         return rowView;
